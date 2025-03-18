@@ -1,0 +1,46 @@
+Card com contagem regrssivas
+
+<div class="countdown-container">
+  <h5>Contagem Regressiva para o Evento</h5>
+  <p id="countdown"></p>
+</div>
+
+<script>
+  var countDownDate = new Date("Mar 10, 2025 15:00:00").getTime();
+
+  var x = setInterval(function() {
+    var now = new Date().getTime();
+    var distance = countDownDate - now;
+
+    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("countdown").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+
+    if (distance < 0) {
+      clearInterval(x);
+      document.getElementById("countdown").innerHTML = "Evento Iniciado!";
+    }
+  }, 1000);
+</script>
+
+
+Card simples 
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="card" style="width: 18rem;">
+      <img src="imagem/noticia1.jpg" class="card-img-top" alt="Imagem notícia">
+      <div class="card-body">
+        <h5 class="card-title">Notícia em Destaque 1</h5>
+        <p class="card-text">Descrição rápida sobre a notícia destacada.</p>
+        <a href="#" class="btn btn-primary">Leia mais</a>
+      </div>
+    </div>
+  </div>
+  <!-- Repita para outras notícias -->
+</div>
+
+Card
