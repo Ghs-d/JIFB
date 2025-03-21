@@ -1,3 +1,5 @@
+{% load static %} 
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -16,7 +18,7 @@
           <nav class="navbar bg-body-tertiary">
                 <div class="container">
                     <a class="navbar-brand" href="#">
-                    <img src="/assets/logo_nv-removebg-preview.png" alt="Bootstrap" width="120" height="60">
+                    <img src="{% static 'JIFB/logo_nv-removebg-preview.png' %}" alt="Bootstrap" width="120" height="60">
                     </a>
                 </div>
                 </nav>
@@ -59,7 +61,7 @@
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <div class="d-flex justify-content-center">
-        <img src="/assets/logo_nv-removebg-preview.png" class="hero-logo" alt="Logo">
+        <img src="{% static 'JIFB/logo_nv-removebg-preview.png' %}" class="hero-logo" alt="Logo">
       </div>
       <p class="hero-message">Bem-vindo ao Jornal IFBaiano Campus Santa Inês! Informação com qualidade e compromisso.</p>
     </div>
@@ -72,7 +74,7 @@
       <h2 class="titulo-secao">📅 Eventos</h2>
       <div class="eventos-container">
         <div class="card">
-          <img src="./assets/Novembro-negro.png" class="card__image" alt="Imagem do Evento">
+          <img src="/assets/Novembro-negro.png" class="card__image" alt="Imagem do Evento">
           <div class="card__content">
             <h2 class="card__title">Título do Evento</h2>
             <p class="card__descricao">
