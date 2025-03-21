@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News</title>
+</head>
+<body>
+    <table border="1">
+        <thead>
+            <th>Título</th>
+            <th>Notícia</th>
+            <th>Data</th>
+            <th>Autor</th>
+        </thead>
+        <tbody>
+            {% for news in notícias %}
+                <tr>
+                    <td>{{news.titulo}}</td>
+                    <td>{{news.noticia}}</td>
+                    <td>{{news.data_de_criacao}}</td>
+                    <td>{{news.autor}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
