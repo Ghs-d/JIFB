@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import NoticiasForm
 from django.http import HttpRequest
 from .models import NotíciaModel
+from django.contrib.auth.decorators import login_required
 
 def publicar(request:HttpRequest):
     if request.method == "POST":
@@ -28,7 +29,7 @@ def news_view(request):
     }
     return render(request, 'jornalista/news.html', contexto)
 
-
+@login_required
 def editar_news(request:HttpRequest, id):
     noticia = get_object_or_404(NotíciaModel, id=id)
     if request.method == "POST":
@@ -42,7 +43,7 @@ def editar_news(request:HttpRequest, id):
     }
     return render(request, 'jornalista/editar.html', contexto)
 
-
+@login_required
 def remover_news(request:HttpRequest, id):
     noticia = get_object_or_404(NotíciaModel, id=id)
     noticia.delete()
