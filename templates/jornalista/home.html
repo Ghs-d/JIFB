@@ -1,11 +1,60 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notícias</title>
+    <title>Área do Jornalista</title>
+    <style>
+        header {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px;
+            background-color: #333;
+        }
+        header a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        button {
+            display: block;
+            width: 200px;
+            padding: 10px;
+            margin: 10px auto;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h1>Aqui fica a área do jornalista</h1>
+    <header>
+        <a href="logout.html">Sair da Sessão</a>
+    </header>
+    <div class="container">
+        <h2>Área do Jornalista</h2>
+        <button onclick="location.href='news/'">Ver Notícias</button>
+        <button onclick="location.href='publicar'">Publicar</button>
+    </div>
 </body>
 </html>
