@@ -16,9 +16,8 @@ def publicar(request:HttpRequest):
     }
     return render(request, 'jornalista/publicar.html', contexto)
 
-def login_view(request):
-    return render(request, 'jornalista/login.html')
 
+@login_required
 def home_view(request):
     return render(request, 'jornalista/home.html')
 
