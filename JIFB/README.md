@@ -1,2 +1,0 @@
-# JIFB
-Jornal escolar

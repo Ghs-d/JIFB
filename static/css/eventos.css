@@ -1,6 +1,6 @@
 
  /* Container do Card */
- .card {
+ .carde {
 	max-width: 1000px; /* Largura máxima em telas grandes */
 	width: 90%; /* Largura padrão em telas menores */
 	margin: 20px auto;
@@ -13,7 +13,7 @@
   }
 
   @media (max-width: 767px) {
-	.card {
+	.carde {
 		
 	  width: 99%; /* Ocupa 100% da largura */
 	  max-width: 99%; /* Remove a largura máxima */
@@ -22,7 +22,7 @@
   }
 
   @media (min-width: 768px) {
-	.card {
+	.carde {
 	  flex-direction: row !important;
 	  align-items: flex-start ;
 	}
@@ -50,9 +50,7 @@
   }
 
   /* Conteúdo do Card */
-  .card__content {
-	flex: 1;
-  }
+ 
 
   .card__title {
 	font-size: 24px;
