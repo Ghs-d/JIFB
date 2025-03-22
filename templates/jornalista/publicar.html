@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -15,7 +16,7 @@
           <nav class="navbar bg-body-tertiary">
                 <div class="container">
                     <a class="navbar-brand" href="#">
-                    <img src="/assets/logo_nv-removebg-preview.png" alt="Bootstrap" width="120" height="60">
+                    <img src="{% static 'JIFB/logo_nv-removebg-preview.png' %}" alt="Bootstrap" width="120" height="60">
                     </a>
                 </div>
                 </nav>
@@ -45,7 +46,7 @@
             </ul>
             <form class="d-flex" role="search">
               <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Pesquisah</button>
+              <button class="btn btn-outline-success" type="submit">Pesquisa</button>
             </form>
           </div>
         </div>
