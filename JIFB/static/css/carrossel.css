@@ -1,0 +1,55 @@
+.carousel {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+  }
+  
+  .carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+  }
+  
+  .card_noticia {
+    flex: 0 0 300px; /* Tamanho fixo dos cards */
+    margin: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: center;
+  }
+  
+  .card_noticia img {
+    width: 100%;
+    height: auto;
+  }
+  
+  button {
+    background-color: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 10px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+  }
+  
+  button.prev {
+    left: 0;
+  }
+  
+  button.next {
+    right: 0;
+  }
+
+  .icon {
+    width: 20px!important;
+    height: 20px!important;
+    margin-right: 5px!important;
+  }
+  
