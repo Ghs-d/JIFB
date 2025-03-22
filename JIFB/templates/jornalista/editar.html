@@ -69,6 +69,12 @@
 
   <!-- Quill JavaScript -->
   <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+
+  <form action="" method="post">
+    {%csrf_token%}
+    {{form}}
+    <input type="submit" class="btn-publicar" value="Salvar alteração">
+</form>
   <script>
     var toolbarOptions = [
      
@@ -93,13 +99,11 @@
       placeholder: 'Escreva seu texto aqui...'
     });
 
+    
 
 
-   /* <form action="" method="post">
-                {%csrf_token%}
-                {{form}}
-                <input type="submit" class="btn-publicar" value="Salvar alteração">
-            </form>*/
+
+   
   </script>
 
 
