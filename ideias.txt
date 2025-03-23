@@ -1,0 +1,16 @@
+Esse site vai funcionar da seguinte forma:
+
+
+site.com/
+Essa é página principal onde aparecerá as notícias mais
+relevantes no momento
+
+site.com/news/
+É onde as notícias irá aparecer, para os jornalistas
+irá aparecer botões de editar e excluir
+
+site.com/jornalistas/
+Para acessar essa página será necessário fazer login
+quem estiver no grupo de jornalistas verá um "dashboard"
+e quem não estiver será redireciona para silte.com/
+
