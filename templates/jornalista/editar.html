@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
-  
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<title>Editor de Texto JIFB</title>
+</head>
+<body>
 
     <!-- Navbar -->
 
@@ -55,27 +56,27 @@
 
       
   <!-- Quill CSS -->
-
-  <style>
+<style>
     #editor-container {
       height: 400px; /* Ajuste a altura do editor */
     }
-  </style>
-</head>
-<body>
+</style>
+
+  <!-- Título -->
   <h1>Editor de Texto JIFB</h1>
   <!-- Contêiner do Editor -->
   <div id="editor-container"></div>
 
-  <!-- Quill JavaScript -->
-  <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
 
-  <form action="" method="post">
+<form action="" method="post">
     {%csrf_token%}
     {{form}}
     <input type="submit" class="btn-publicar" value="Salvar alteração">
 </form>
-  <script>
+
+
+
+<script>
     var toolbarOptions = [
      
       [{ 'size': ['small', false, 'large', 'huge'] }], // Tamanhos de fonte
@@ -98,18 +99,14 @@
       },
       placeholder: 'Escreva seu texto aqui...'
     });
-
-    
-
-
-
-   
-  </script>
+</script>
 
 
 
 
-    
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+  <!-- Quill JavaScript -->
+<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
