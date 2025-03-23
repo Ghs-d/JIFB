@@ -1,14 +1,15 @@
+{% load static %} 
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
-    <link rel="stylesheet" href="/css/eventos.css">
-    <link rel="stylesheet" href="/css/style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  </head>
-  <body>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JIFB | Santa Inês</title>
+<link rel="stylesheet" href="{% static 'css/eventos.css' %}">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
@@ -16,17 +17,18 @@
           <nav class="navbar bg-body-tertiary">
                 <div class="container">
                     <a class="navbar-brand" href="#">
-                    <img src="/assets/logo_nv-removebg-preview.png" alt="logo jifb" width="120" height="60">
-                    </a>
+                    <img src="{% static 'JIFB/logo_nv-removebg-preview.png' %}" alt="Bootstrap" width="120" height="60">
+                   </a>
                 </div>
-                </nav>
+           </nav>
+
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+             <span class="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+               <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="#">Home</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">Quem somos</a>
@@ -35,42 +37,50 @@
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Dropdown
                 </a>
-                <ul class="dropdown-menu">
+              <ul class="dropdown-menu">
                   <li><a class="dropdown-item" href="#">Action</a></li>
                   <li><a class="dropdown-item" href="#">Another action</a></li>
                   <li><hr class="dropdown-divider"></li>
                   <li><a class="dropdown-item" href="#">Something else here</a></li>
+                  {% if pertence_ao_grupo %}
+                  {% endif %}
+                  <li>
+                    <li><button onclick="location.href='/jornalista/publicar/'">Criar Notícia</button></li>
+                    <li><button onclick="location.href='/jornalista/news/'">Editar Notícias</button></li>
+                  </li>
                 </ul>
               </li>
-              
-            </ul>
-            <form class="d-flex" role="search">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Pesquisah</button>
-            </form>
+              {% if pertence_ao_grupo %}
+              {% endif %}
+              <li>
+                <li><button onclick="location.href='/jornalista/publicar/'">Criar Notícia</button></li>
+                <li><button onclick="location.href='/jornalista/news/'">Editar Notícias</button></li>
+              </li>
+              </ul>
+              <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Pesquisa</button>
+              </form>
           </div>
         </div>
       </nav>
 
+      <!-- Entrada do Jornal -->
+            <div class="entrada-container">
+              <img src="{% static 'JIFB/entrada-ifbainao.jpg' %}" alt="Entrada do IF" class="entrada-lg">
+              <img src="{% static 'JIFB/logo_nv-removebg-preview.png'%}" alt="Logo do Jornal" class="entrada-logo">
+              <div class="entrada-mensagem">
+                <p>Bem-vindo ao Jornal IFBaiano! Informação com qualidade e compromisso.</p>
+              </div>
+            </div>
 
- 
-<div class="entrada-container">
-  <img src="/assets/entrada-ifbainao.jpg" alt="Entrada do IF" class="entrada-lg">
-  <img src="/assets/logo_nv-removebg-preview.png" alt="Logo do Jornal" class="entrada-logo">
-  <div class="entrada-mensagem">
-    <p>Bem-vindo ao Jornal IFBaiano! Informação com qualidade e compromisso.</p>
-  </div>
-</div>
-
-
-  
 
     <!-- Seção de Eventos -->
     <section class="eventos" id="eventos">
       <h2 class="titulo-secao">📅 Eventos</h2>
       <div class="eventos-container">
         <div class="carde">
-          <img src="/assets/Novembro-negro.png" class="card__image" alt="Imagem do Evento">
+          <img src="{% static 'JIFB/Novembro-negro.png' %}" class="card__image" alt="Imagem do Evento">
           <div class="card__content">
             <h2 class="card__title">Título do Evento</h2>
             <p class="card__descricao">
@@ -89,13 +99,15 @@
       </div>
     </section>
 
+
+
     <!-- Seção de Notícias -->
 
     <section class="noticias" id="noticias">
       <h2 class="titulo-secao text-center mb-4">📰 Notícias</h2>
       <div class="container">
         <div class="card-noticia">
-          <img src="/assets/Novembro-negro.png" alt="Projeto de ensino">
+          <img src="{% static 'JIFB/Novembro-negro.png' %}" alt="Projeto de ensino">
           <div class="card-noticia__content">
             <h2 class="card-noticia__title">Projeto de ensino</h2>
             <p class="card-noticia__date">Posted on September 30, 2022 by Hedvan Fernandes</p>
@@ -106,22 +118,20 @@
         </div>
       </div>
     </section>
-    
-    
-                 
-                
-                  
-              
        
+<!--Rodape-->
 
-                  
-                  
+<footer class="footer">
+  <div class="footer-container">
+    <img src="{% static 'JIFB/logo-ifbaiano.png' %}" alt="Logo do Rodapé" class="footer-image">
+    <img src="{% static 'JIFB/logo_nv-removebg-preview.png' %}" alt="Logo do Rodapé JIFB" class="footer-logo-jif">
+  </div>
+  <hr>
+  <p>©Criado pelos os alunos IF Baiano - Campus Santa Inês</p>
+</footer>
+  
+</section>
 
-
-
-   
-    </section>
- 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-  </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
 </html>
