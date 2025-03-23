@@ -21,6 +21,7 @@ def publicar(request:HttpRequest):
 def home_view(request):
     return render(request, 'jornalista/home.html')
 
+
 def news_view(request):
     contexto = {
         "form":NoticiasForm,
