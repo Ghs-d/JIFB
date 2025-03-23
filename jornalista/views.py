@@ -47,3 +47,8 @@ def remover_news(request:HttpRequest, id):
     noticia = get_object_or_404(NotíciaModel, id=id)
     noticia.delete()
     return redirect("news")
+
+def quem_somos(request):
+    return render(request, 'news/quemsomos.html')  # ghs
+
+

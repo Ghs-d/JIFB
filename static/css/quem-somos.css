@@ -1,0 +1,71 @@
+/*Rodape*/
+
+.footer {
+    background-color: #1a1a1a; 
+    color: #fff; 
+    padding: 20px 0; /* Espaçamento no rodapé */
+    text-align: center; /* Centraliza o texto horizontalmente */
+  }
+  
+  .footer-container {
+    display: flex; 
+    justify-content: center; 
+    align-items: center; /* Centraliza verticalmente */
+    gap: 700px; /* Espaçamento entre as imagens */
+  }
+  
+  .footer-image, .footer-logo-jif {
+    width: 250px; 
+    height: auto; 
+    margin: 0; 
+  }
+  
+  .footer hr {
+    margin: 20px auto; /* Centraliza a linha horizontal */
+    border-color: #fff; 
+  }
+  
+  .footer p {
+    margin-top: 20px; /* Espaçamento acima do texto */
+    font-size: 14px; 
+  }
+  
+  
+  
+.titulo-secao {
+    margin-top: 20px;
+    font-size: 2.5rem; 
+    font-weight: 500;
+ 
+    color: #1a1a1a; /* Cor escura para maior contraste */
+    text-align: center;
+    margin-bottom: 2rem;
+    text-transform: uppercase; /* Deixa o título em maiúsculas */
+    letter-spacing: 2px;
+    position: relative;
+    padding-bottom: 10px;
+  }
+
+  .container-qs {
+    max-width: 800px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+
+h1, h2 {
+    color: #333;
+}
+.pa {
+    color: #555;
+}
+.estatuto {
+    margin-top: 20px;
+    padding: 15px;
+    background: #eaeaea;
+    border-radius: 5px;
+}
