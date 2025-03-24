@@ -57,3 +57,8 @@ def remover_news(request:HttpRequest, id):
         return redirect("news")
     else: 
         return redirect("news")
+
+def quem_somos(request):
+    return render(request, 'news/quemsomos.html')  # ghs
+
+
