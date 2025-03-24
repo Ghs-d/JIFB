@@ -4,18 +4,21 @@ from django.http import HttpRequest
 from .models import NotíciaModel
 from django.contrib.auth.decorators import login_required
 
+@login_required
 def publicar(request:HttpRequest):
-    if request.method == "POST":
-        formulario = NoticiasForm(request.POST)
-        if formulario.is_valid:
-            formulario.save()
-            return redirect("news")
+    if request.user.groups.filter(name="Jornalista"):
+        if request.method == "POST":
+            formulario = NoticiasForm(request.POST)
+            if formulario.is_valid:
+                formulario.save()
+                return redirect("news")
 
-    contexto = {
-        "form":NoticiasForm
-    }
-    return render(request, 'jornalista/publicar.html', contexto)
-
+        contexto = {
+            "form":NoticiasForm
+        }
+        return render(request, 'jornalista/publicar.html', contexto)
+    else:
+        return redirect("news")
 
 @login_required
 def home_view(request):
@@ -31,20 +34,26 @@ def news_view(request):
 
 @login_required
 def editar_news(request:HttpRequest, id):
-    noticia = get_object_or_404(NotíciaModel, id=id)
-    if request.method == "POST":
-        formulario = NoticiasForm(request.POST, instance=noticia)
-        if formulario.is_valid:
-            formulario.save()
-            return redirect("news")
-    formulario = NoticiasForm(instance=noticia)
-    contexto = {
-        'form':formulario
-    }
-    return render(request, 'jornalista/editar.html', contexto)
+    if request.user.groups.filter(name="Jornalista"):
+        noticia = get_object_or_404(NotíciaModel, id=id)
+        if request.method == "POST":
+            formulario = NoticiasForm(request.POST, instance=noticia)
+            if formulario.is_valid:
+                formulario.save()
+                return redirect("news")
+        formulario = NoticiasForm(instance=noticia)
+        contexto = {
+            'form':formulario
+        }
+        return render(request, 'jornalista/editar.html', contexto)
+    else: 
+        return redirect("news")
 
 @login_required
 def remover_news(request:HttpRequest, id):
-    noticia = get_object_or_404(NotíciaModel, id=id)
-    noticia.delete()
-    return redirect("news")
+    if request.user.groups.filter(name="Jornalista"):
+        noticia = get_object_or_404(NotíciaModel, id=id)
+        noticia.delete()
+        return redirect("news")
+    else: 
+        return redirect("news")
