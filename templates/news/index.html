@@ -43,10 +43,14 @@
                   
                 </ul>
               </li>
+              {% if pertence_ao_grupo %}
+              {% endif %}
+              <li>
+                  <li><button onclick="location.href='/jornalista/publicar/'">Criar Notícia</button></li>
+                  <li><button onclick="location.href='/jornalista/news/'">Editar Notícias</button></li>
+                </li>
               
-              
-                
-            
+              <li>
               </ul>
               <form class="d-flex" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -54,11 +58,7 @@
               </form>
           </div>
         </div>
-      </nav>
-
-
-
- 
+      </nav> 
     <div class="entrada-container">
       <img src="{% static 'JIFB/entrada-ifbainao.jpg' %}" alt="Entrada do IF" class="entrada-lg">
       <img src="{% static 'JIFB/logo_nv-removebg-preview.png'%}" alt="Logo do Jornal" class="entrada-logo">
