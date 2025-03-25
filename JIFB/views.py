@@ -7,9 +7,12 @@ def index_view(request):
     return render(request, 'news/index.html')
 
 def news_view(request):
+    usuario = request.user
+    pertence_ao_jornalismo = usuario.groups.filter(name="Jornalista").exists()
     contexto = {
         "form":NoticiasForm,
-        "notícias":NotíciaModel.objects.all()
+        "notícias":NotíciaModel.objects.all(),
+        'pertence_ao_jornalismo':pertence_ao_jornalismo
     }
     return render(request, 'news/news.html', contexto)
 
