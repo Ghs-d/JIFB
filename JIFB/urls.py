@@ -32,4 +32,8 @@ urlpatterns = [
     path('', views.index_view),
     path('news/', views.news_view, name='news'),
     path('jornalista/', include('jornalista.urls')),
+<<<<<<< HEAD
+=======
+    path('api-auth/', include('rest_framework.urls'))
+>>>>>>> ec4bfcade886f9b625f31082b2cdb0eaa233f103
 ]

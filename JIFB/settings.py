@@ -38,6 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'jornalista',
+<<<<<<< HEAD
+=======
+    'rest_framework',
+>>>>>>> ec4bfcade886f9b625f31082b2cdb0eaa233f103
 ]
 
 MIDDLEWARE = [

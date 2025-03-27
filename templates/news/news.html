@@ -16,12 +16,16 @@
         </thead>
         <tbody>
             {% for news in notícias %}
-                <tr>
-                    <td>{{news.titulo}}</td>
-                    <td>{{news.noticia}}</td>
-                    <td>{{news.data_de_criacao}}</td>
-                    <td>{{news.autor}}</td>
-                </tr>
+            <tr>
+                <td>{{news.titulo}}</td>
+                <td>{{news.noticia}}</td>
+                <td>{{news.data_de_criacao}}</td>
+                <td>{{news.autor}}</td>
+                {% if pertence_ao_jornalismo%}
+                <td><a href="{% url 'editar' news.id %}">Editar</a></td>
+                <td><a href="{% url 'remover' news.id %}">Remover</a></td>
+                {% endif %}
+            </tr>
             {% endfor %}
         </tbody>
     </table>

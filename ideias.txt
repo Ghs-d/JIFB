@@ -14,3 +14,6 @@ Para acessar essa página será necessário fazer login
 quem estiver no grupo de jornalistas verá um "dashboard"
 e quem não estiver será redireciona para silte.com/
 
+login
+O site terá um sistema de login onde haverá um autenticação por e-mail
+
