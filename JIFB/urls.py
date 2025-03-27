@@ -19,11 +19,17 @@ from django.urls import path, include
 from . import views
 
 
+"""
+@api.get("/add")
+def add(request, a: int, b: int):
+    return {"result": a + b}
+"""
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', views.login_view),
+     path('login/', views.login_view, name='login'),
     path('', views.index_view),
     path('news/', views.news_view, name='news'),
     path('jornalista/', include('jornalista.urls')),
-    path('api-auth/', include('api.urls'))
 ]
