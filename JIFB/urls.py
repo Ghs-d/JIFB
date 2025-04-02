@@ -16,7 +16,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from . import views
 
 
 """
@@ -28,9 +27,5 @@ def add(request, a: int, b: int):
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', views.login_view),
-    path('', views.index_view),
-    path('news/', views.news_view, name='news'),
-    path('jornalista/', include('jornalista.urls')),
-    path('api-auth/', include('rest_framework.urls'))
+    path('', include('base.urls')),
 ]

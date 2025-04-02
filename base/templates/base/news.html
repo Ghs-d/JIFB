@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News</title>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <table border="1">
+        <thead>
+            <th>Título</th>
+            <th>Notícia</th>
+            <th>Data</th>
+            <th>Autor</th>
+        </thead>
+        <tbody>
+            {% for news in notícias %}
+            <tr>
+                <td>{{news.titulo}}</td>
+                <td>{{news.noticia}}</td>
+                <td>{{news.data_de_criacao}}</td>
+                <td>{{news.autor}}</td>
+                {% if pertence_ao_jornalismo%}
+                <td><a href="{% url 'editar' news.id %}">Editar</a></td>
+                <td><a href="{% url 'remover' news.id %}">Remover</a></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <img src="{% static 'logo_nv-removebg-preview.png' %}" alt="Bootstrap" width="120" height="60">
+</body>
+</html>

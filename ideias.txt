@@ -1,5 +1,8 @@
 Esse site vai funcionar da seguinte forma:
 
+**
+ADICIONAR COMENTÁRIOS
+
 
 site.com/
 Essa é página principal onde aparecerá as notícias mais

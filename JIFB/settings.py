@@ -37,8 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'jornalista',
-    'rest_framework',
+    'base.apps.BaseConfig'
 ]
 
 MIDDLEWARE = [
@@ -114,10 +113,12 @@ USE_I18N = True
 USE_TZ = True
 
 
+MEDIA_ROOT = BASE_DIR / 'static/'
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # Default primary key field type
