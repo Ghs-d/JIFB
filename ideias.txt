@@ -20,5 +20,5 @@ Para acessar essa página será necessário fazer login
 quem for jornalistas aparecerá a opção de adiocionar notícias 
 
 site.com/login
-O site terá um sistema de login onde haverá um autenticação por e-mail
+O site terá um sistema de login
 
