@@ -13,7 +13,23 @@
     {% include 'navbar.html' %}
     <div>
         <div>
+            <br>
+            <br>
+            {{noticia.autor}}
+            <br>
+            <br>
+            {{noticia.título}}
+            <br>
+            <br>
+            <img src="{% static noticia.capa_noticia %}" alt="">
+            <br>
+            <br>
+            {{noticia.created}}
+            <br>
+            <br>
             {{ conteudo_html|safe }}
+
+
         </div>
     </div>
 </body>

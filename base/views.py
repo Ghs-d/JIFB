@@ -37,6 +37,7 @@ def NoticiaPage(request, pk):
         return render(request, "base/news.html", context)
     
     elif pk != 'feed':
+        noticias = Noticia.objects.all()
         noticia = get_object_or_404(Noticia, pk=pk)
 
         # Ler o conteúdo do arquivo Markdown
@@ -46,4 +47,8 @@ def NoticiaPage(request, pk):
         # Converter Markdown para HTML
         conteudo_html = markdown2.markdown(conteudo_markdown)
 
-        return render(request, "base/template_news.html", {"conteudo_html": conteudo_html})
+        context = {
+            'conteudo_html':conteudo_html,
+            'noticia':noticia
+        }
+        return render(request, "base/template_news.html", context)

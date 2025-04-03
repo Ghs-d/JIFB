@@ -8,15 +8,17 @@ site.com/
 Essa é página principal onde aparecerá as notícias mais
 relevantes no momento
 
-site.com/news/
-É onde as notícias irá aparecer, para os jornalistas
+site.com/noticia/feed
+É onde todas as notícias irá aparecer, para os jornalistas
 irá aparecer botões de editar e excluir
 
-site.com/jornalistas/
-Para acessar essa página será necessário fazer login
-quem estiver no grupo de jornalistas verá um "dashboard"
-e quem não estiver será redireciona para silte.com/
+site.com/noticia/id
+Aqui aparecerá somente uma noticia específica, aparecerá toda a matéria
 
-login
+site.com/admin
+Para acessar essa página será necessário fazer login
+quem for jornalistas aparecerá a opção de adiocionar notícias 
+
+site.com/login
 O site terá um sistema de login onde haverá um autenticação por e-mail
 
