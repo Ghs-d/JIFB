@@ -1,16 +1,13 @@
 .entrada-container {
-  position: relative; /* Permite posicionamento absoluto da logo */
-  width: 1350px;
+  position: relative;
+  width: 100%; /* Ajuste para 100% de largura */
+  max-width: 1350px; /* Limita a largura máxima */
   height: 550px;
   overflow: hidden;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  margin: 20px auto; /* Centraliza horizontalmente */
+  margin: 20px auto;
 }
-
-
-
-
 
 .entrada-lg {
   width: 100%;
@@ -20,31 +17,79 @@
   top: 0;
   left: 0;
   z-index: -1;
-  filter: brightness(50%); /* Escurecendo a imagem */
+  filter: brightness(50%);
 }
-
-
 
 .entrada-logo {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 280px; /* Ajuste conforme necessário */
+  width: 280px;
   height: auto;
   opacity: 0.9;
 }
-.entrada-mensagem {
-position: absolute;
-top: 65%; /* Ajusta a posição logo abaixo da imagem */
-left: 50%;
-transform: translate(-50%, -50%);
-font-size: 18px; 
-font-weight: bold; 
-color: white; 
-text-align: center;
 
+.entrada-mensagem {
+  position: absolute;
+  top: 65%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  text-align: center;
 }
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .entrada-container {
+    height: 400px; 
+  }
+
+  .entrada-logo {
+    width: 200px; /
+  }
+
+  .entrada-mensagem {
+    margin-top: 20px;
+    font-size: 16px; 
+    top: 70%; 
+  }
+}
+
+/* Responsivo para tablets e dispositivos de tela média */
+@media (max-width: 1024px) {
+  .entrada-container {
+    height: 450px;
+  }
+
+  .entrada-logo {
+    width: 240px; 
+  }
+
+  .entrada-mensagem {
+    font-size: 17px; 
+    top: 68%; 
+  }
+}
+
+
+@media (min-width: 1600px) {
+  .entrada-container {
+    width: 1500px; 
+    height: 650px;
+  }
+
+  .entrada-logo {
+    width: 350px; 
+  }
+
+  .entrada-mensagem {
+    font-size: 20px;
+  }
+}
+
 
 
 
@@ -114,31 +159,73 @@ text-align: center;
 
 
 .footer {
-  background-color: #1a1a1a; 
-  color: #fff; 
-  padding: 20px 0; /* Espaçamento no rodapé */
-  text-align: center; /* Centraliza o texto horizontalmente */
+  background-color: #1a1a1a;
+  color: #fff;
+  padding: 20px 0;
+  text-align: center;
+  margin-top: 50px;
+  width: 100%;
 }
 
 .footer-container {
-  display: flex; 
-  justify-content: center; 
-  align-items: center; /* Centraliza verticalmente */
-  gap: 700px; /* Espaçamento entre as imagens */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
 }
 
-.footer-image, .footer-logo-jif {
-  width: 250px; 
-  height: auto; 
-  margin: 0; 
+.footer-image {
+  width: 250px;
+  height: auto;
+  margin: 0;
+}
+
+.footer-logo-jif {
+  width: 250px;
+  height: auto;
+  margin: 0;
 }
 
 .footer hr {
-  margin: 20px auto; /* Centraliza a linha horizontal */
-  border-color: #fff; 
+  margin: 20px auto;
+  border-color: #fff;
+  width: 80%;
 }
 
 .footer p {
-  margin-top: 20px; /* Espaçamento acima do texto */
-  font-size: 14px; 
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+/* Tornando o rodapé responsivo */
+@media (max-width: 768px) {
+  .footer{
+    margin-top: auto !important;
+  }
+
+  .footer-container {
+    flex-direction: column;
+    align-items: center;
+    
+  }
+
+  .footer-logo-jif {
+    display: none !important;
+  }
+
+  .footer-image {
+    width: 220px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-image {
+    width: 200px;
+  }
+
+  .footer p {
+    font-size: 12px;
+  }
 }
