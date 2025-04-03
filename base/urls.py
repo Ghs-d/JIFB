@@ -9,5 +9,6 @@ urlpatterns = [
     path('', views.HomePage, name='home'),
     path('quem-somos/', views.QuemSomosPage, name='quem_somos'),
     path('noticia/<str:pk>/', views.NoticiaPage, name='noticia'),
+    
     #{% url 'noticia' noticia.id %} 
 ]

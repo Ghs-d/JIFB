@@ -26,13 +26,16 @@ def QuemSomosPage(request):
 
 
 def NoticiaPage(request, pk):
-    noticia = get_object_or_404(Noticia, pk=pk)
+    if pk == 'feed':
+        return render(request, "base/news.html",)
+    elif pk != 'feed':
+        noticia = get_object_or_404(Noticia, pk=pk)
 
-    # Ler o conteúdo do arquivo Markdown
-    with noticia.noticia.open("rb") as f:
-        conteudo_markdown = f.read().decode("utf-8")
-    
-    # Converter Markdown para HTML
-    conteudo_html = markdown.markdown(conteudo_markdown)
+        # Ler o conteúdo do arquivo Markdown
+        with noticia.noticia.open("rb") as f:
+            conteudo_markdown = f.read().decode("utf-8")
+        
+        # Converter Markdown para HTML
+        conteudo_html = markdown.markdown(conteudo_markdown)
 
-    return render(request, "base/template_news.html", {"conteudo_html": conteudo_html})
+        return render(request, "base/template_news.html", {"conteudo_html": conteudo_html})
