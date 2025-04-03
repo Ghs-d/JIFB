@@ -57,11 +57,9 @@
         {% for noticia in noticias %}
         <a href="{% url 'noticia' noticia.id %}" style="text-decoration: none; color: inherit;">
           <div class="noticia-card">
-          {{noticia.id}}
-          <br>
           {{noticia.título}}
           <br>
-          <img src="{% static noticia.capa_noticia %}">
+          <img src="{% static noticia.capa_noticia %}" style="width:200px;">
         </div>
         {% endfor%} 
       </div>

@@ -1,6 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Noticia
-import markdown
+import markdown2
 import os
 # Create your views here.
 def LoginPage(request):
@@ -17,17 +17,25 @@ def HomePage(request):
     context = {
         'noticias':noticas
     }
-    return render(request, 'base/home.html', context)
+    return render(request, 'base/index.html', context)
 
 
 def QuemSomosPage(request):
     return render(request, 'base/quemsomos.html')
 
-
+def NoticiaRedirect(request):
+    return redirect('feed/')
 
 def NoticiaPage(request, pk):
     if pk == 'feed':
-        return render(request, "base/news.html",)
+        noticias = Noticia.objects.all()
+
+        context = {
+            'noticias':noticias,
+        }
+
+        return render(request, "base/news.html", context)
+    
     elif pk != 'feed':
         noticia = get_object_or_404(Noticia, pk=pk)
 
@@ -36,6 +44,6 @@ def NoticiaPage(request, pk):
             conteudo_markdown = f.read().decode("utf-8")
         
         # Converter Markdown para HTML
-        conteudo_html = markdown.markdown(conteudo_markdown)
+        conteudo_html = markdown2.markdown(conteudo_markdown)
 
         return render(request, "base/template_news.html", {"conteudo_html": conteudo_html})

@@ -5,31 +5,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>News</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
 </head>
 <body>
     {% include 'navbar.html' %}
-    <table border="1">
-        <thead>
-            <th>Título</th>
-            <th>Notícia</th>
-            <th>Data</th>
-            <th>Autor</th>
-        </thead>
-        <tbody>
-            {% for news in notícias %}
-            <tr>
-                <td>{{news.titulo}}</td>
-                <td>{{news.noticia}}</td>
-                <td>{{news.data_de_criacao}}</td>
-                <td>{{news.autor}}</td>
-                {% if pertence_ao_jornalismo%}
-                <td><a href="{% url 'editar' news.id %}">Editar</a></td>
-                <td><a href="{% url 'remover' news.id %}">Remover</a></td>
-                {% endif %}
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <img src="{% static 'logo_nv-removebg-preview.png' %}" alt="Bootstrap" width="120" height="60">
+    
+    <div>
+        
+        {% for news in noticias %}
+            <div>
+                <a href="{% url 'noticia' news.id %}" >
+                <img src="{% static news.capa_noticia %}" alt="Capa" width="500", height="500">
+            </div>
+        {% endfor %}
+
+    </div>
+
+    <img src="{% static 'JIFB/logo_nv-removebg-preview.png' %}" alt="Bootstrap" width="120" height="60">
 </body>
 </html>

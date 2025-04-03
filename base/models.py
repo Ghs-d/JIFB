@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django import forms
 # Create your models here.
 
 class Noticia(models.Model):
@@ -8,8 +8,9 @@ class Noticia(models.Model):
     título = models.CharField(max_length=200)
     
     noticia = models.FileField(upload_to="Notícias .MD/%Y/%m/%d/", blank=True, null=True)
+    imagens_na_noticia = models.ImageField(upload_to="static/Notícias .MD/image", blank=True, null=True)
     capa_noticia = models.ImageField(upload_to="Notícias .MD/CAPAS/%Y/%m/%d/", blank=True, null=True)
-    
+
     visivel = models.BooleanField(default=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
