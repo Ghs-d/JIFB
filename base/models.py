@@ -7,9 +7,9 @@ class Noticia(models.Model):
     autor = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     título = models.CharField(max_length=200)
     
-    noticia = models.FileField(upload_to="Notícias .MD/%Y/%m/%d/", blank=True, null=True)
-    arquivos_na_noticia = models.ImageField(upload_to="static/Notícias .MD/imagem", blank=True, null=True)
-    capa_noticia = models.ImageField(upload_to="Notícias .MD/CAPAS/%Y/%m/%d/", blank=True, null=True)
+    corpo = models.FileField(upload_to="Notícias .MD/%Y/%m/%d/")
+    arquivos_na_noticia = models.ImageField(upload_to="static/Notícias .MD/imagem")
+    capa_noticia = models.ImageField(upload_to="Notícias .MD/CAPAS/%Y/%m/%d/")
 
     visivel = models.BooleanField(default=True)
     updated = models.DateTimeField(auto_now=True)
