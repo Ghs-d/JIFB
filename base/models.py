@@ -8,7 +8,7 @@ class Noticia(models.Model):
     título = models.CharField(max_length=200)
     
     noticia = models.FileField(upload_to="Notícias .MD/%Y/%m/%d/", blank=True, null=True)
-    imagens_na_noticia = models.ImageField(upload_to="static/Notícias .MD/image", blank=True, null=True)
+    arquivos_na_noticia = models.ImageField(upload_to="static/Notícias .MD/imagem", blank=True, null=True)
     capa_noticia = models.ImageField(upload_to="Notícias .MD/CAPAS/%Y/%m/%d/", blank=True, null=True)
 
     visivel = models.BooleanField(default=True)
