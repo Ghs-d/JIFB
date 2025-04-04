@@ -17,7 +17,7 @@ def LogoutUser(request):
     pass
 
 def HomePage(request):
-    noticias = Noticia.objects.all()
+    noticias = Noticia.objects.all().order_by('updated').values()
     context = {
         'noticias':noticias
     }
