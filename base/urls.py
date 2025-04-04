@@ -10,6 +10,8 @@ urlpatterns = [
     path('quem-somos/', views.QuemSomosPage, name='quem_somos'),
     path('noticia/', views.NoticiaRedirect),
     path('noticia/<str:pk>/', views.NoticiaPage, name='noticia'),
+    path('noticia/publicar/', views.NoticiaPage, name='publicar'),
+    path('noticia/feed/', views.NoticiaPage, name='feed'),
     
     #{% url 'noticia' noticia.id %} 
 ]

@@ -1,5 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Noticia
+from .models import Noticia, ArquivoNaNoticia
+from .forms import NoticiaForm, ArquivosForm
+
+
+
 import markdown2
 import os
 # Create your views here.
@@ -24,7 +28,7 @@ def QuemSomosPage(request):
     return render(request, 'base/quemsomos.html')
 
 def NoticiaRedirect(request):
-    return redirect('feed/')
+    return redirect('feed')
 
 def NoticiaPage(request, pk):
     if pk == 'feed':
@@ -36,7 +40,34 @@ def NoticiaPage(request, pk):
 
         return render(request, "base/news.html", context)
     
-    elif pk != 'feed':
+    elif pk == 'publicar':
+        if request.method == 'POST':
+            noticia_form = NoticiaForm(request.POST, request.FILES)
+            arquivo_form = ArquivosForm(request.POST, request.FILES)
+            arquivos = request.FILES.getlist('arquivos_na_noticia')
+            
+            if noticia_form.is_valid() and arquivo_form.is_valid():
+                noticia = noticia_form.save(commit=False)
+                noticia.autor = request.user
+                noticia.save()
+                
+                for arquivo in request.FILES.getlist('arquivos'):
+                    ArquivoNaNoticia.objects.create(noticia=noticia, arquivo=arquivo)
+                
+                return redirect('feed')
+        else:
+            noticia_form = NoticiaForm()
+            arquivo_form = ArquivosForm()
+        
+        
+        context = {
+            'arquivo_form':arquivo_form,
+            'noticia_form':noticia_form
+        }
+        return render(request, "base/noticia_form.html", context)
+
+
+    elif pk.isnumeric():
         noticias = Noticia.objects.all()
         noticia = get_object_or_404(Noticia, pk=pk)
 
@@ -52,3 +83,6 @@ def NoticiaPage(request, pk):
             'noticia':noticia
         }
         return render(request, "base/template_news.html", context)
+    
+    else:
+        return redirect('feed')
