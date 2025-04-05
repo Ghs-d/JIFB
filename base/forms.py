@@ -27,9 +27,18 @@ class NoticiaForm(ModelForm):
         model = Noticia
         fields = '__all__'
         exclude = ['autor']
+        widgets = {
+            'título': forms.TextInput(attrs={'class': 'form-control'}),
+            'corpo': forms.FileInput(attrs={'class': 'form-control'}),
+            'capa_noticia': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'visivel': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
 
 class ArquivosForm(forms.ModelForm):
     arquivos = MultipleFileField()
     class Meta:
         model = ArquivoNaNoticia
         fields = ['arquivos']
+        widgets = {
+            'arquivos': MultipleFileInput(attrs={'class': 'form-control'})
+        }
