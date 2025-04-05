@@ -10,10 +10,9 @@
     <title>Publicar ou Editar Notícias</title>
   </head>
   <body>
+
     {% include 'navbar.html' %}
-
-
-    
+ 
     <div>
       <form enctype="multipart/form-data" method="POST">
         {% csrf_token %}
@@ -22,22 +21,22 @@
           {{arquivo_form.management_form }}
 
           {% for form in arquivo_form %}
-        <div class="arquivo-item">
-            {{ form.as_p }}
+            <div class="arquivo-item">
+                {{ form.as_p }}
 
-            {% if form.instance.pk %}
-                <p>Arquivo atual: 
-                    <a href="{{ form.instance.arquivo.url }}">
-                        {{ form.instance.arquivo.name }}
-                    </a>
-                </p>
-            {% endif %}
+                {% if form.instance.pk %}
+                    <p>Arquivo atual: 
+                        <a href="{{ form.instance.arquivo.url }}">
+                            {{ form.instance.arquivo.name }}
+                        </a>
+                    </p>
+                {% endif %}
 
-            {% if form.can_delete %}
-                <label>Excluir: {{ form.DELETE }}</label>
-            {% endif %}
-        </div>
-    {% endfor %}
+                {% if form.can_delete %}
+                    <label>Excluir: {{ form.DELETE }}</label>
+                {% endif %}
+            </div>
+          {% endfor %}
 
         <input type="submit" value="Enviar">
       </form>
