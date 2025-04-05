@@ -16,10 +16,12 @@
         
         {% for news in noticias %}
             {% if news.visivel == True %}
+            <a href="{% url 'noticia' news.id %}" >
+
                 <div>
-                    <a href="{% url 'noticia' news.id %}" >
-                    <img src="{% static news.capa_noticia %}" alt="Capa" width="500", height="500">
+                    <img src="{% static 'media/'|add:news.capa_noticia %}" alt="Capa" width="500", height="500">
                 </div>
+            </a>
             {% endif %}
         {% endfor %}
 

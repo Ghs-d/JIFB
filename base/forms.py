@@ -28,8 +28,8 @@ class NoticiaForm(ModelForm):
         fields = '__all__'
         exclude = ['autor']
 
-class ArquivosForm(forms.Form):
+class ArquivosForm(forms.ModelForm):
     arquivos = MultipleFileField()
     class Meta:
         model = ArquivoNaNoticia
-        fields = ('arquivos',)
+        fields = ['arquivos']

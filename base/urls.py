@@ -6,12 +6,17 @@ urlpatterns = [
     path('logout/', views.LogoutUser, name='logout'),
     path('register/', views.RegisterUser, name='register'),
 
+    path('noticia/', views.NoticiaRedirect),
+
     path('', views.HomePage, name='home'),
     path('quem-somos/', views.QuemSomosPage, name='quem_somos'),
-    path('noticia/', views.NoticiaRedirect),
+
+    path('publicar/', views.NoticiaPublicar, name='publicar'),
+    path('editar/<str:pk>/', views.NoticiaEditar, name='editar'),
+
     path('noticia/<str:pk>/', views.NoticiaPage, name='noticia'),
-    path('noticia/publicar/', views.NoticiaPage, name='publicar'),
     path('noticia/feed/', views.NoticiaPage, name='feed'),
+
     
     #{% url 'noticia' noticia.id %} 
 ]

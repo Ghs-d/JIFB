@@ -24,7 +24,7 @@ class Noticia(models.Model):
 
 class ArquivoNaNoticia(models.Model):
     noticia = models.ForeignKey(Noticia, related_name='arquivos', on_delete=models.CASCADE)
-    arquivo = models.FileField(upload_to="Notícias .MD/arquivos/")
+    arquivo = models.FileField(upload_to="Notícias .MD/arquivos/", blank=True, null=True)
 
     def __str__(self):
         return f"Arquivo de {self.noticia.título}"

@@ -24,16 +24,17 @@
       <div>
         <div>
           {% for noticia in noticias %}
-            {% if news.visivel == True %}
-              <a href="{% url 'noticia' noticia.id %}" style="text-decoration: none; color: inherit;"></a>
+            {% if noticia.visivel == True %}
+              <a href="{% url 'noticia' noticia.id %}" style="text-decoration: none; color: inherit;">
                 <div class="noticia-card">
                   {{noticia.título}}
                   <br>
-                  @{{noticia.autor.username}}
+                  @{{noticia.autor}}
                   <br>
-                  <img src="{% static noticia.capa_noticia %}" style="width:200px;">
+                  <img src="{% static 'media/' %}{{ noticia.capa_noticia }}" style="width:200px;" alt="">
                 </div>
-            {% ednif %}
+                </a>
+            {% endif %}
           {% endfor%} 
         </div>
       </div>

@@ -15,13 +15,16 @@
         <div>
             <br>
             <br>
+            <a href="{% url 'editar' noticia.id %}">Editar</a>
+            <br>
+            <br>
             {{noticia.autor}}
             <br>
             <br>
             {{noticia.título}}
             <br>
             <br>
-            <img src="{% static noticia.capa_noticia %}" alt="">
+            <img src="{% static 'media/' %}{{ noticia.capa_noticia }}" alt="">
             <br>
             <br>
             {{noticia.created}}
