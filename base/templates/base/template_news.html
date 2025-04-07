@@ -18,6 +18,9 @@
             <a href="{% url 'editar' noticia.id %}">Editar</a>
             <br>
             <br>
+            <a href="{% url 'excluir' noticia.id %}">Excluir</a>
+            <br>
+            <br>
             {{noticia.autor}}
             <br>
             <br>
@@ -31,6 +34,15 @@
             <br>
             <br>
             {{ conteudo_html|safe }}
+            <br>
+            <br>
+            
+            {% for arquivo in arquivos %}
+                {% for keys, values in arquivo.items %}
+                    <a href="{% url 'home' %}static/media/{{ values }}">{{ values }}</a>
+                {% endfor %}
+            {% endfor %}
+                    
 
 
         </div>

@@ -3,9 +3,9 @@ from .models import Noticia, ArquivoNaNoticia
 from django import forms
 
 
-
 class MultipleFileInput(forms.ClearableFileInput):
     allow_multiple_selected = True
+
 
 class MultipleFileField(forms.FileField):
     def __init__(self, *args, **kwargs):
@@ -19,7 +19,6 @@ class MultipleFileField(forms.FileField):
         else:
             result = [single_file_clean(data, initial)]
         return result
-
 
 
 class NoticiaForm(ModelForm):
@@ -38,7 +37,8 @@ class ArquivosForm(forms.ModelForm):
     arquivos = MultipleFileField()
     class Meta:
         model = ArquivoNaNoticia
-        fields = ['arquivos']
+        fields = ['Nome_do_Arquivo', 'arquivos']
         widgets = {
+            'Nome_do_Arquivo': forms.TextInput(attrs={'class': 'form-control'}),
             'arquivos': MultipleFileInput(attrs={'class': 'form-control'})
         }

@@ -2,12 +2,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Noticia, ArquivoNaNoticia
 from .forms import NoticiaForm, ArquivosForm
 from django.forms import modelformset_factory
-
-
-
+from django.core.exceptions import MultipleObjectsReturned
 import markdown2
 import os
-
 
 def LoginPage(request):
     return render(request, 'base/login.html')
@@ -32,8 +29,6 @@ def HomePage(request):
     return render(request, "base/index.html", context)
 
 
-
-
 def NoticiaPublicar(request):
     if request.method == 'POST':
         noticia_form = NoticiaForm(request.POST, request.FILES)
@@ -46,7 +41,7 @@ def NoticiaPublicar(request):
             noticia.save()
             
             for arquivo in request.FILES.getlist('arquivos'):
-                ArquivoNaNoticia.objects.create(noticia=noticia, arquivo=arquivo)
+                ArquivoNaNoticia.objects.create(noticia=noticia, arquivos=arquivo)
             
             return redirect('feed')
     else:
@@ -60,65 +55,43 @@ def NoticiaPublicar(request):
     }
     return render(request, "base/noticia_form.html", context)
 
+
 def NoticiaEditar(request, pk):
-
-    noticia = Noticia.objects.get(id=pk)
-    noticia_form = NoticiaForm(instance=noticia)
-    
-    ArquivoFormSet = modelformset_factory(
-        ArquivoNaNoticia, 
-        form=ArquivosForm, 
-        extra=1, 
-        can_delete=True,
-        fields=['arquivos'],
-
-        )
-
-    arquivo_form = ArquivoFormSet()
-
+    noticia = get_object_or_404(Noticia, pk=pk)
 
     if request.method == 'POST':
-        noticia_form = NoticiaForm(
-            request.POST, 
-            request.FILES, 
-            instance=noticia
-            )
-        arquivo_form = ArquivoFormSet(
-            request.POST,
-            request.FILES,
-        )
-        
-        if noticia_form.is_valid() and arquivo_form.is_valid():
-            noticia_form.save()
+        noticia_form = NoticiaForm(request.POST, request.FILES, instance=noticia)
 
-            arquivos = arquivo_form.save(commit=False)
-            for arquivo in arquivos:
-                arquivo.noticia = noticia
-                arquivo.save()
+        arquivos = request.FILES.getlist('arquivos')
 
-            for form in arquivo_form.deleted_forms:
-                if hasattr(form, 'instance') and form.instance.pk:
-                    form.instance.delete()
+        if noticia_form.is_valid():
+            noticia = noticia_form.save(commit=False)
+            noticia.autor = request.user
+            noticia.save()
+            
+            for arq in arquivos:
+                ArquivoNaNoticia.objects.create(noticia=noticia, arquivos=arq)
 
             return redirect('home')
-        
-        
+
+    else:
+        noticia_form = NoticiaForm(instance=noticia)
+
     context = {
-        'noticia_form':noticia_form,
-        'arquivo_form':arquivo_form
+        'noticia_form': noticia_form,
     }
     return render(request, "base/editar.html", context)
 
 
-    
-
 
 def NoticiaPage(request, pk):
     if pk.isnumeric():
-        noticias = Noticia.objects.all()
         noticia = get_object_or_404(Noticia, pk=pk)
-        
-        if noticia.visivel == True:
+
+        arquivos = list(ArquivoNaNoticia.objects.filter(noticia=noticia).values('arquivos'))
+
+        if pk.isnumeric():
+        #if noticia.visivel == True and not request.user.is_staff():
             # Ler o conteúdo do arquivo Markdown
             with noticia.corpo.open("rb") as f:
                 conteudo_markdown = f.read().decode("utf-8")
@@ -128,7 +101,8 @@ def NoticiaPage(request, pk):
 
             context = {
                 'conteudo_html':conteudo_html,
-                'noticia':noticia
+                'noticia':noticia,
+                'arquivos':arquivos
             }
             return render(request, "base/template_news.html", context)
         else:
@@ -147,3 +121,11 @@ def NoticiaPage(request, pk):
         return redirect('feed')
 
 
+def NoticiaExcluir(request, pk):
+    noticia = Noticia.objects.get(id=pk)
+    print(noticia)
+    if request.method == 'POST':
+        noticia.delete()
+        return redirect('feed')
+
+    return render(request, "base/excluir.html", {'obj':noticia})

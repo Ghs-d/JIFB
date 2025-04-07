@@ -1,9 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django import forms
-# Create your models here.
-
-
 
 
 class Noticia(models.Model):
@@ -24,7 +21,8 @@ class Noticia(models.Model):
 
 class ArquivoNaNoticia(models.Model):
     noticia = models.ForeignKey(Noticia, related_name='arquivos', on_delete=models.CASCADE)
-    arquivo = models.FileField(upload_to="Notícias .MD/arquivos/", blank=True, null=True)
+    Nome_do_Arquivo = models.CharField(max_length=100, blank=True, null=True)
+    arquivos = models.FileField(upload_to="Notícias .MD/arquivos/", blank=True, null=True)
 
     def __str__(self):
         return f"Arquivo de {self.noticia.título}"

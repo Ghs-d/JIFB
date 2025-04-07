@@ -13,10 +13,9 @@ urlpatterns = [
 
     path('publicar/', views.NoticiaPublicar, name='publicar'),
     path('editar/<str:pk>/', views.NoticiaEditar, name='editar'),
+    path('excluir/<str:pk>/', views.NoticiaExcluir, name='excluir'),
 
     path('noticia/<str:pk>/', views.NoticiaPage, name='noticia'),
     path('noticia/feed/', views.NoticiaPage, name='feed'),
 
-    
-    #{% url 'noticia' noticia.id %} 
 ]
