@@ -24,7 +24,7 @@
             <div class="arquivo-item">
                 {{ form.as_p  }}
 
-                {% if form.instance.pk and form.instance.arquivo %}
+                {% if form.instance.pk and form.instance.arquivos %}
                     <p>Arquivo atual: 
                       <a href="{% url 'home' %}static{{ form.instance.arquivo.url }}">
                         {{ form.instance.arquivo.name }}

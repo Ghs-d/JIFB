@@ -15,7 +15,7 @@
     <div>
         
         {% for news in noticias %}
-            {% if news.visivel != True %}
+            {% if news.visivel == True %}
             <a href="{% url 'noticia' news.id %}" >
 
                 <div>

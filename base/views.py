@@ -89,6 +89,8 @@ def NoticiaPage(request, pk):
         noticia = get_object_or_404(Noticia, pk=pk)
 
         arquivos = list(ArquivoNaNoticia.objects.filter(noticia=noticia).values('arquivos'))
+        nomes = list(ArquivoNaNoticia.objects.filter(noticia=noticia).values('Nome_do_Arquivo'))
+ 
 
         if pk.isnumeric():
         #if noticia.visivel == True and not request.user.is_staff():
@@ -102,7 +104,8 @@ def NoticiaPage(request, pk):
             context = {
                 'conteudo_html':conteudo_html,
                 'noticia':noticia,
-                'arquivos':arquivos
+                'arquivos':arquivos,
+                'nomes':nomes
             }
             return render(request, "base/template_news.html", context)
         else:
