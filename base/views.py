@@ -6,6 +6,9 @@ import os
 def LoginPage(request):
     return render(request, 'base/login.html')
 
+def RegisterPage(request):
+    return render(request, 'base/register.html')
+
 def RegisterUser(request):
     pass
 
