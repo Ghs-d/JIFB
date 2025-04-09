@@ -1,4 +1,4 @@
-python manage.py runserver{% load static %} 
+{% load static %} 
 <!doctype html>
 <html lang="pt-BR">
 <head>
@@ -33,66 +33,19 @@ python manage.py runserver{% load static %}
       <div class="container-noticias">
         <section class="noticias">
             <div class="noticias-container">
+                {% for noticia in noticias %}
+                    {% if noticia.visivel == True %}
                 <div class="noticia-card">
-                    <a href="#">
-                        <img src="{% static 'JIFB/Novembro-negro.png' %}" alt="Notícia 1">
+                    <a href="{% url 'noticia' noticia.id %}">
+                        <img src="{% static 'media/' %}{{ noticia.capa_noticia }}" alt="Notícia {{ noticia.id }}">
                     </a>
                     <div class="noticia-card-content">
-                        <h3>Título da Notícia 1</h3>
-                        <p>Descrição breve da notícia para atrair o leitor.</p>
-                        <a href="#" class="noticia-leia">Leia mais</a>
+                        <h3>{{ noticia.título }}</h3>
+                        <a href="{% url 'noticia' noticia.id %}" class="noticia-leia">Leia mais</a>
                     </div>
                 </div>
-                <div class="noticia-card">
-                    <a href="#">
-                        <img src="{% static 'JIFB/Novembro-negro.png' %}" alt="Notícia 2">
-                    </a>
-                    <div class="noticia-card-content">
-                        <h3>Título da Notícia 2</h3>
-                        <p>Descrição breve da notícia para atrair o leitor.</p>
-                        <a href="#" class="noticia-leia">Leia mais</a>
-                    </div>
-                </div>
-                <div class="noticia-card">
-                    <a href="#">
-                        <img src="{% static 'JIFB/Novembro-negro.png' %}" alt="Notícia 3">
-                    </a>
-                    <div class="noticia-card-content">
-                        <h3>Título da Notícia 3</h3>
-                        <p>Descrição breve da notícia para atrair o leitor.</p>
-                        <a href="#" class="noticia-leia">Leia mais</a>
-                    </div>
-                </div>
-                <div class="noticia-card">
-                    <a href="#">
-                        <img src="{% static 'JIFB/Novembro-negro.png' %}" alt="Notícia 4">
-                    </a>
-                    <div class="noticia-card-content">
-                        <h3>Título da Notícia 4</h3>
-                        <p>Descrição breve da notícia para atrair o leitor.</p>
-                        <a href="#" class="noticia-leia">Leia mais</a>
-                    </div>
-                </div>
-                <div class="noticia-card">
-                    <a href="#">
-                        <img src="{% static 'JIFB/Novembro-negro.png' %}" alt="Notícia 5">
-                    </a>
-                    <div class="noticia-card-content">
-                        <h3>Título da Notícia 5</h3>
-                        <p>Descrição breve da notícia para atrair o leitor.</p>
-                        <a href="#" class="noticia-leia">Leia mais</a>
-                    </div>
-                </div>
-                <div class="noticia-card">
-                    <a href="#">
-                        <img src="{% static 'JIFB/Novembro-negro.png' %}" alt="Notícia 6">
-                    </a>
-                    <div class="noticia-card-content">
-                        <h3>Título da Notícia 6</h3>
-                        <p>Descrição breve da notícia para atrair o leitor.</p>
-                        <a href="#" class="noticia-leia">Leia mais</a>
-                    </div>
-                </div>
+                    {% endif %}
+                {% endfor %}
             </div>
         </section>
     </div>

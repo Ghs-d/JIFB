@@ -1,12 +1,12 @@
-# Nome do projeto
+# Jornal IF Baiano
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/Ghs-d/JIFB?style=for-the-badge)
 ![GitHub language count](https://img.shields.io/github/languages/count/Ghs-d/JIFB?style=for-the-badge)
 ![GitHub forks](https://img.shields.io/github/forks/Ghs-d/JIFB?style=for-the-badge)
 
-<img src="imagem.png" alt="Exemplo imagem">
+<img src="static/media/JIFB/exemplo_site.png" alt="Exemplo imagem">
 
-> O Jornal IF Baiano é um projeto feito por alunos para compartilhar informações e notícias especificamente para o do Campus Santa Inês.
+> O Jornal IF Baiano é um projeto feito por alunos para compartilhar informações e notícias especificamente para os estudantes dos Campi Baianos.
 
 ### Ajustes e melhorias
 
