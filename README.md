@@ -41,9 +41,9 @@ Windows:
 pip install -r requirements.txt
 ```
 
-## ☕ Usando <nome_do_projeto>
+## ☕ Usando JIFB
 
-Para usar <nome_do_projeto>, siga estas etapas:
+Para usar JIFB, siga estas etapas:
 
 ```
 python manage.py runserver
@@ -52,7 +52,7 @@ python manage.py runserver
 
 ## 🤝 Desenvolvedor Back-end
 
-Agradecemos às seguintes pessoas que contribuíram para este projeto:
+Agradecemos a seguinte pessoa que contribuiu para este projeto:
 
 <table>
   <tr>
