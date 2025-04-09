@@ -32,6 +32,8 @@ class Mensagem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     noticia = models.ForeignKey(Noticia, on_delete=models.CASCADE)
     body = models.TextField()
+    gostei = models.IntegerField(blank=True, null=True)
+    Não_gostei = models.IntegerField(blank=True, null=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     

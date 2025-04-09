@@ -2,6 +2,12 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import modelformset_factory
 from django.core.exceptions import MultipleObjectsReturned
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+from django.core import exceptions
+from django.contrib import messages
+from django.http import HttpResponse
 import os
 from pathlib import Path
 
@@ -10,20 +16,47 @@ from .forms import NoticiaForm, ArquivosForm
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-def LoginPage(request):
-    return render(request, 'base/login.html')
-
-def RegisterUser(request):
-    return render(request, 'base/register.html')
-
-def LogoutUser(request):
-    pass
 
 def QuemSomosPage(request):
     return render(request, 'base/quemsomos.html')
 
+
 def NoticiaRedirect(request):
     return redirect('feed')
+
+
+def LoginPage(request):
+
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        try:
+            user = User.objects.get(username=username)
+        except:
+            messages.error(request, 'Usuário não existe!')
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.error(request, 'Nome de usuário OU senha estão erradas!')
+
+    context = {
+
+    }
+    return render(request, 'base/login.html', context)
+
+def RegisterUser(request):
+    return render(request, 'base/register.html')
+
+@login_required(login_url='/login')
+def LogoutUser(request):
+    logout(request)
+    return redirect('home')
+
 
 
 def HomePage(request):
@@ -37,22 +70,21 @@ def HomePage(request):
 
 def Procurar(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-    tem_noticias = False
+    número_de_notícia = 0
     noticias = Noticia.objects.all().order_by('updated').filter(
-        Q(título__icontains=q) &
-        Q()
+        Q(título__icontains=q)
         )
-    if len(noticias) != 0:
-        tem_noticias = True
+    número_de_notícia = noticias.count()
+
     context = {
         'noticias':noticias,
-        'tem_noticias':tem_noticias
+        'número_de_notícia':número_de_notícia
     }
     return render(request, "base/procurar.html", context)
 
 
 
-
+@login_required(login_url='/login')
 def NoticiaPublicar(request):
     if request.method == 'POST':
         noticia_form = NoticiaForm(request.POST, request.FILES)
@@ -78,9 +110,14 @@ def NoticiaPublicar(request):
     }
     return render(request, "base/noticia_form.html", context)
 
-
+@login_required(login_url='/login')
 def NoticiaEditar(request, pk):
     noticia = get_object_or_404(Noticia, pk=pk)
+
+
+    if not request.user.is_staff:
+        return HttpResponse("<h1>Somente o autor pode alterar alguma coisa dessa notícia!</h1>")
+
 
     if request.method == 'POST':
 
@@ -117,8 +154,8 @@ def NoticiaPage(request, pk):
 
         arquivos = list(ArquivoNaNoticia.objects.filter(noticia=noticia).values('arquivos'))
  
-
-        if pk.isnumeric():
+        print(noticia)
+        if noticia.visivel == True:
             conteudo_html = noticia.corpo
 
             context = {
@@ -140,12 +177,15 @@ def NoticiaPage(request, pk):
         return render(request, "base/news.html", context)
 
     else:
-        return redirect('feed')
+        return redirect('home')
 
-
+@login_required(login_url='/login')
 def NoticiaExcluir(request, pk):
     noticia = Noticia.objects.get(id=pk)
-    print(noticia)
+
+    if not request.user.is_staff:
+        return HttpResponse("<h1>Somente o autor pode alterar alguma coisa dessa notícia!</h1>")
+
     if request.method == 'POST':
         os.remove(os.path.join(BASE_DIR/ 'static', 'media', noticia.capa_noticia))
         os.remove(os.path.join(BASE_DIR/ 'static', 'media', noticia.corpo))

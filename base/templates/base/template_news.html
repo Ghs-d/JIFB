@@ -130,7 +130,6 @@
     {% include 'navbar.html' %}
 
     <section>
-    
         <div class="container noticia-container">
             <div class="noticia-autor mb-2">
                 Publicado por: {{ noticia.autor }}
@@ -149,8 +148,15 @@
               <include src="{% static 'media/' %}{{ conteudo_html }}"></include>
             </div>
         </div>
-          
     </section>
+    {% if request.user.is_staff %}
+      <section>
+        
+        <a href="{% url 'editar' noticia.id %}">Editar</a>
+        <a href="{% url 'excluir' noticia.id %}">Excluir</a>
+
+      </section>
+    {% endif %}
     {% include 'footer.html' %}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/htmlincludejs"></script>

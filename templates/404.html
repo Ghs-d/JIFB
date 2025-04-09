@@ -22,9 +22,14 @@
         <div class="error">
         <div class="error__title">404</div>
         <div class="error__subtitle">Hmmm...</div>
-        <div class="error__description">It looks like one of the  developers fell asleep</div>
-        <button class="error__button error__button--active">LOGIN</button>
-        <button class="error__button">CONTACT</button>
+        <div class="error__description">Parece que um dos desenvolvedores adormeceu</div>
+        
+        <form class="d-flex" role="search" method="GET" action="{% url 'feed' %}">
+            <button class="error__button error__button--active">Ver notícias</button>
+        </form>
+        <form class="d-flex" role="search" method="GET" action="{{request.META.HTTP_REFERER}}">
+            <button class="error__button">Voltar</button>
+        </form>
         </div>
 
         <div class="astronaut">
