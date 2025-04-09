@@ -1,4 +1,0 @@
-- Qual é o meu maior talento?
-- Em qual atividade está minha paixão mais genuína?
-- Que sentido vejo na vida? 
-- Qual é meu propósito de vida?
