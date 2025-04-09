@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import modelformset_factory
 from django.core.exceptions import MultipleObjectsReturned
+from django.db.models import Q
 import os
 from pathlib import Path
 
@@ -26,11 +27,30 @@ def NoticiaRedirect(request):
 
 
 def HomePage(request):
+
     noticias = Noticia.objects.all().order_by('updated')
     context = {
         'noticias':noticias
     }
     return render(request, "base/index.html", context)
+
+
+def Procurar(request):
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    tem_noticias = False
+    noticias = Noticia.objects.all().order_by('updated').filter(
+        Q(título__icontains=q) &
+        Q()
+        )
+    if len(noticias) != 0:
+        tem_noticias = True
+    context = {
+        'noticias':noticias,
+        'tem_noticias':tem_noticias
+    }
+    return render(request, "base/procurar.html", context)
+
+
 
 
 def NoticiaPublicar(request):

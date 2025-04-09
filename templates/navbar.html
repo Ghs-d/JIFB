@@ -39,8 +39,8 @@
                 </ul>
             </li>
           </ul>
-            <form class="d-flex" role="search">
-              <input class="form-control me-2" type="search" placeholder="Pesquisar" aria-label="Pesquisar">
+            <form class="d-flex" role="search" method="GET" action="{% url 'procurar' %}">
+              <input class="form-control me-2" name="q" type="text" placeholder="Pesquisar" aria-label="Pesquisar">
               <button class="btn btn-outline-success" type="submit">Pesquisar</button>
             </form>
       </div>
