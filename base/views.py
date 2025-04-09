@@ -9,11 +9,8 @@ import os
 def LoginPage(request):
     return render(request, 'base/login.html')
 
-def RegisterPage(request):
-    return render(request, 'base/register.html')
-
 def RegisterUser(request):
-    pass
+    return render(request, 'base/register.html')
 
 def LogoutUser(request):
     pass
@@ -25,7 +22,7 @@ def NoticiaRedirect(request):
     return redirect('feed')
 
 def HomePage(request):
-    noticias = Noticia.objects.all().order_by('updated').values()
+    noticias = Noticia.objects.all().order_by('updated')
     context = {
         'noticias':noticias
     }
@@ -115,7 +112,7 @@ def NoticiaPage(request, pk):
             return redirect('feed')
         
     elif pk == 'feed':
-        noticias = Noticia.objects.all().order_by('updated').values()
+        noticias = Noticia.objects.all().order_by('updated')
 
         context = {
             'noticias':noticias,

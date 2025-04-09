@@ -5,7 +5,7 @@ from django import forms
 
 class Noticia(models.Model):
     autor = models.ForeignKey(User, on_delete=models.CASCADE)
-    título = models.CharField(max_length=200)
+    título = models.CharField(max_length=500)
     
     corpo = models.FileField(upload_to="Notícias .MD/%Y/%m/%d/")
     capa_noticia = models.ImageField(upload_to="Notícias .MD/CAPAS/%Y/%m/%d/")

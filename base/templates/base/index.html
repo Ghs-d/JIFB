@@ -1,26 +1,14 @@
-python manage.py runserver{% load static %} 
+{% load static %} 
 <!doctype html>
 <html lang="pt-BR">
-<<<<<<< HEAD
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>JIFB | Santa Inês</title>
-<link rel="stylesheet" href="{% static 'css/noticias.css' %}">
-<link rel="stylesheet" href="{% static 'css/eventos.css' %}">
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-</head>
-=======
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>JIFB | Santa Inês</title>
-    <link rel="stylesheet" href="{% static 'css/eventos.css' %}">
+    <link rel="stylesheet" href="{% static 'css/noticias.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   </head>
->>>>>>> e1f9e39768e9b331465db0fbdb3d02baca9a4c02
 <body>
 
     {% include 'navbar.html' %}
@@ -33,7 +21,7 @@ python manage.py runserver{% load static %}
           </div>
       </div>
 
-<<<<<<< HEAD
+
 
 
     <!-- Seção de Notícias -->
@@ -44,65 +32,22 @@ python manage.py runserver{% load static %}
       <div class="container-noticias">
         <section class="noticias">
             <div class="noticias-container">
-                <div class="noticia-card">
-                    <a href="#">
-                        <img src="{% static 'JIFB/Novembro-negro.png' %}" alt="Notícia 1">
-                    </a>
-                    <div class="noticia-card-content">
-                        <h3>Título da Notícia 1</h3>
-                        <p>Descrição breve da notícia para atrair o leitor.</p>
-                        <a href="#" class="noticia-leia">Leia mais</a>
-                    </div>
-                </div>
-                <div class="noticia-card">
-                    <a href="#">
-                        <img src="{% static 'JIFB/Novembro-negro.png' %}" alt="Notícia 2">
-                    </a>
-                    <div class="noticia-card-content">
-                        <h3>Título da Notícia 2</h3>
-                        <p>Descrição breve da notícia para atrair o leitor.</p>
-                        <a href="#" class="noticia-leia">Leia mais</a>
-                    </div>
-                </div>
-                <div class="noticia-card">
-                    <a href="#">
-                        <img src="{% static 'JIFB/Novembro-negro.png' %}" alt="Notícia 3">
-                    </a>
-                    <div class="noticia-card-content">
-                        <h3>Título da Notícia 3</h3>
-                        <p>Descrição breve da notícia para atrair o leitor.</p>
-                        <a href="#" class="noticia-leia">Leia mais</a>
-                    </div>
-                </div>
-                <div class="noticia-card">
-                    <a href="#">
-                        <img src="{% static 'JIFB/Novembro-negro.png' %}" alt="Notícia 4">
-                    </a>
-                    <div class="noticia-card-content">
-                        <h3>Título da Notícia 4</h3>
-                        <p>Descrição breve da notícia para atrair o leitor.</p>
-                        <a href="#" class="noticia-leia">Leia mais</a>
-                    </div>
-                </div>
-                <div class="noticia-card">
-                    <a href="#">
-                        <img src="{% static 'JIFB/Novembro-negro.png' %}" alt="Notícia 5">
-                    </a>
-                    <div class="noticia-card-content">
-                        <h3>Título da Notícia 5</h3>
-                        <p>Descrição breve da notícia para atrair o leitor.</p>
-                        <a href="#" class="noticia-leia">Leia mais</a>
-                    </div>
-                </div>
-                <div class="noticia-card">
-                    <a href="#">
-                        <img src="{% static 'JIFB/Novembro-negro.png' %}" alt="Notícia 6">
-                    </a>
-                    <div class="noticia-card-content">
-                        <h3>Título da Notícia 6</h3>
-                        <p>Descrição breve da notícia para atrair o leitor.</p>
-                        <a href="#" class="noticia-leia">Leia mais</a>
-                    </div>
+                {% for noticia in noticias %}
+                    {% if noticia.visivel == True %}
+                        <div class="noticia-card">
+                            <a href="{% url 'noticia' noticia.id %}">
+                                <img src="{% static 'media/' %}{{ noticia.capa_noticia }}" alt="Notícia {{ noticia.id }}">
+                            </a>
+                            <div class="noticia-card-content">
+                                <h3>{{noticia.título}}</h3>
+                                <p>Publicado em {{noticia.created}}</p>
+                                <p>Criado por {{noticia.autor}}</p>
+                                <a href="{% url 'noticia' noticia.id %}" class="noticia-leia">Leia mais</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor%} 
+
                 </div>
             </div>
         </section>
@@ -117,44 +62,30 @@ python manage.py runserver{% load static %}
 
 
 
-<!--Rodape-->
 
-{% include 'footer.html' %}
-=======
+<!--
       <div>
         <div>
-          {% for noticia in noticias %}
-            {% if noticia.visivel == True %}
-              <a href="{% url 'noticia' noticia.id %}" style="text-decoration: none; color: inherit;">
+
+              <a href="" style="text-decoration: none; color: inherit;">
                 <div class="noticia-card">
-                  {{noticia.título}}
+                  
                   <br>
-                  @{{noticia.autor}}
+                  
                   <br>
-                  <img src="{% static 'media/' %}{{ noticia.capa_noticia }}" style="width:200px;" alt="">
+                  <img src="" style="width:200px;" alt="">
                 </div>
                 </a>
-            {% endif %}
-          {% endfor%} 
+            
         </div>
       </div>
->>>>>>> e1f9e39768e9b331465db0fbdb3d02baca9a4c02
 
+-->
                   
                   
-
-
-
-   
 </section>
-
-<<<<<<< HEAD
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-</body>
-
-=======
   {% include 'footer.html' %}
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   </body>
->>>>>>> e1f9e39768e9b331465db0fbdb3d02baca9a4c02
+
 </html>
