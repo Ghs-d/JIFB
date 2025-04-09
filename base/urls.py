@@ -9,6 +9,7 @@ urlpatterns = [
 
     path('noticia/', views.NoticiaRedirect),
     path('', views.HomePage, name='home'),
+    path('procurar', views.Procurar, name='procurar'),
     path('quem-somos/', views.QuemSomosPage, name='quem_somos'),
     path('publicar/', views.NoticiaPublicar, name='publicar'),
     path('editar/<str:pk>/', views.NoticiaEditar, name='editar'),

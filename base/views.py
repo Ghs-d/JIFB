@@ -1,10 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Noticia, ArquivoNaNoticia
-from .forms import NoticiaForm, ArquivosForm
 from django.forms import modelformset_factory
 from django.core.exceptions import MultipleObjectsReturned
-import markdown2
+from django.db.models import Q
 import os
+from pathlib import Path
+
+from .models import Noticia, ArquivoNaNoticia
+from .forms import NoticiaForm, ArquivosForm
+
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 def LoginPage(request):
     return render(request, 'base/login.html')
@@ -21,7 +25,9 @@ def QuemSomosPage(request):
 def NoticiaRedirect(request):
     return redirect('feed')
 
+
 def HomePage(request):
+
     noticias = Noticia.objects.all().order_by('updated')
     context = {
         'noticias':noticias
@@ -29,11 +35,28 @@ def HomePage(request):
     return render(request, "base/index.html", context)
 
 
+def Procurar(request):
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    tem_noticias = False
+    noticias = Noticia.objects.all().order_by('updated').filter(
+        Q(título__icontains=q) &
+        Q()
+        )
+    if len(noticias) != 0:
+        tem_noticias = True
+    context = {
+        'noticias':noticias,
+        'tem_noticias':tem_noticias
+    }
+    return render(request, "base/procurar.html", context)
+
+
+
+
 def NoticiaPublicar(request):
     if request.method == 'POST':
         noticia_form = NoticiaForm(request.POST, request.FILES)
         arquivo_form = ArquivosForm(request.POST, request.FILES)
-        arquivos = request.FILES.getlist('arquivos_na_noticia')
             
         if noticia_form.is_valid() and arquivo_form.is_valid():
             noticia = noticia_form.save(commit=False)
@@ -60,11 +83,15 @@ def NoticiaEditar(request, pk):
     noticia = get_object_or_404(Noticia, pk=pk)
 
     if request.method == 'POST':
+
         noticia_form = NoticiaForm(request.POST, request.FILES, instance=noticia)
 
         arquivos = request.FILES.getlist('arquivos')
-
+        print(arquivos)
         if noticia_form.is_valid():
+            os.remove(os.path.join(BASE_DIR/ 'static', 'media', noticia.capa_noticia))
+            os.remove(os.path.join(BASE_DIR/ 'static', 'media', noticia.corpo))
+
             noticia = noticia_form.save(commit=False)
             noticia.autor = request.user
             noticia.save()
@@ -89,23 +116,15 @@ def NoticiaPage(request, pk):
         noticia = get_object_or_404(Noticia, pk=pk)
 
         arquivos = list(ArquivoNaNoticia.objects.filter(noticia=noticia).values('arquivos'))
-        nomes = list(ArquivoNaNoticia.objects.filter(noticia=noticia).values('Nome_do_Arquivo'))
  
 
         if pk.isnumeric():
-        #if noticia.visivel == True and not request.user.is_staff():
-            # Ler o conteúdo do arquivo Markdown
-            with noticia.corpo.open("rb") as f:
-                conteudo_markdown = f.read().decode("utf-8")
-            
-            # Converter Markdown para HTML
-            conteudo_html = markdown2.markdown(conteudo_markdown)
+            conteudo_html = noticia.corpo
 
             context = {
                 'conteudo_html':conteudo_html,
                 'noticia':noticia,
                 'arquivos':arquivos,
-                'nomes':nomes
             }
             return render(request, "base/template_news.html", context)
         else:
@@ -128,6 +147,13 @@ def NoticiaExcluir(request, pk):
     noticia = Noticia.objects.get(id=pk)
     print(noticia)
     if request.method == 'POST':
+        os.remove(os.path.join(BASE_DIR/ 'static', 'media', noticia.capa_noticia))
+        os.remove(os.path.join(BASE_DIR/ 'static', 'media', noticia.corpo))
+        arquivos = list(ArquivoNaNoticia.objects.filter(noticia=noticia).values('arquivos'))
+        for arquivo in arquivos:
+            os.remove(os.path.join(BASE_DIR/ 'static', 'media', arquivo.arquivos))
+
+        
         noticia.delete()
         return redirect('feed')
 
