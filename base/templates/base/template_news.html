@@ -132,42 +132,6 @@
 </head>
 <body class="bg-light">
     {% include 'navbar.html' %}
-<<<<<<< HEAD
-=======
-    <div>
-        <div>
-            <br>
-            <br>
-            <a href="{% url 'editar' noticia.id %}">Editar</a>
-            <br>
-            <br>
-            <a href="{% url 'excluir' noticia.id %}">Excluir</a>
-            <br>
-            <br>
-            {{noticia.autor}}
-            <br>
-            <br>
-            {{noticia.título}}
-            <br>
-            <br>
-            <img src="{% static 'media/' %}{{ noticia.capa_noticia }}" alt="">
-            <br>
-            <br>
-            {{noticia.created}}
-            <br>
-            <br>
-            {{ conteudo_html|safe }}
-            <br>
-            <br>
-            
-            {% for arquivo in arquivos %}
-                {% for keys, values in arquivo.items %}
-                    <a href="{% url 'home' %}static/media/{{ values }}">{{ values }}</a>
-                {% endfor %}
-            {% endfor %}
-                    
-
->>>>>>> e1f9e39768e9b331465db0fbdb3d02baca9a4c02
 
 <section>
     
@@ -188,7 +152,6 @@
                 {{ conteudo_html|safe }}
             </div>
         </div>
-<<<<<<< HEAD
 
         <div class="card">
             <span class="title">Leave a Comment</span>
@@ -219,9 +182,5 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-=======
-    </div>
-    {% include 'footer.html' %}
->>>>>>> e1f9e39768e9b331465db0fbdb3d02baca9a4c02
 </body>
 </html>
