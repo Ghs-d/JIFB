@@ -38,7 +38,7 @@ python3 -m pip install -r requirements.txt
 Windows:
 
 ```
-py -m pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 ## ☕ Usando <nome_do_projeto>
