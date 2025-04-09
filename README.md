@@ -23,7 +23,7 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão vo
 Antes de começar, verifique se você atendeu aos seguintes requisitos:
 
 - Você instalou `Python 3.13`
-- Você tem uma máquina `Windows`. Indique qual sistema operacional é compatível / não compatível.
+- Você tem uma máquina `Windows, Linux ou MacOS`.
 
 ## 🚀 Instalando <nome_do_projeto>
 
