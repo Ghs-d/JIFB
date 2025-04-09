@@ -1,14 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django import forms
-# Create your models here.
+
 
 class Noticia(models.Model):
-    autor = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    autor = models.ForeignKey(User, on_delete=models.CASCADE)
     título = models.CharField(max_length=200)
     
     corpo = models.FileField(upload_to="Notícias .MD/%Y/%m/%d/")
-    arquivos_na_noticia = models.ImageField(upload_to="static/Notícias .MD/imagem")
     capa_noticia = models.ImageField(upload_to="Notícias .MD/CAPAS/%Y/%m/%d/")
 
     visivel = models.BooleanField(default=True)
@@ -18,7 +17,18 @@ class Noticia(models.Model):
 
     def __str__(self):
         return self.título
-    
+
+
+class ArquivoNaNoticia(models.Model):
+    noticia = models.ForeignKey(Noticia, related_name='arquivos', on_delete=models.CASCADE)
+    Nome_do_Arquivo = models.CharField(max_length=100, blank=True, null=True)
+    arquivos = models.FileField(upload_to="Notícias .MD/arquivos/", blank=True, null=True)
+
+    def __str__(self):
+        return f"Arquivo de {self.noticia.título}"
+
+
+
 class Mensagem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     noticia = models.ForeignKey(Noticia, on_delete=models.CASCADE)
