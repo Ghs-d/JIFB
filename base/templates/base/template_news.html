@@ -26,47 +26,92 @@
     <div class="conteudo">
       {{ conteudo_html|safe }}
     </div>
-   
-  {% if user.is_authenticated %}
-  <div class="comentario-card">
-    <h2 class="comentario-titulo">Deixe um comentário</h2>
-    <form id="form-comentario" class="comentario-form">
-      <div class="input-group">
-        <textarea id="comentario" placeholder="Escreva seu comentário..." required></textarea>
-        <label for="comentario">Comentário</label>
-      </div>
-      <button type="submit">Enviar</button>
-    </form>
-  </div>
+  </div> 
 
-{% else %}
-  <div class="comentario-card">
-    <p class="comentario-login-texto">Você precisa estar <a href="{% url 'login' %}">logado</a> para comentar.</p>
-  </div>
-{% endif %}
+    <div class="comentarios-lista card">
+      <div class="title">Comentários</div>
+    
+      {% if comentarios %}
+        <div class="comment-container">
+          {% for comentario in comentarios %}
+            <div class="user">
+              <div class="user-pic">
+                <img src="{% static 'img/default-avatar.png' %}" alt="Avatar" style="width: 100%; height: 100%;">
+              </div>
+              <div class="user-info">
+                <span>{{ comentario.usuario.username }}</span>
+                <p>{{ comentario.data_postagem|date:"d M Y - H:i" }}</p>
+              </div>
+            </div>
+            <div class="comment-content">{{ comentario.texto }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    
+      <div class="text-box">
+        <form method="post" id="form-comentario" action="{% if user.is_authenticated %}#{% else %}{% url 'login' %}{% endif %}">
+          {% csrf_token %}
+          <div class="box-container">
+            <textarea 
+              name="comentario" 
+              placeholder="Escreva um comentário..." 
+              required 
+              {% if not user.is_authenticated %}readonly onclick="window.location.href='{% url 'login' %}'"{% endif %}
+            ></textarea>
+          </div>
+          <div class="formatting">
+            <button 
+              type="submit" 
+              class="send" 
+              {% if not user.is_authenticated %}onclick="window.location.href='{% url 'login' %}'; return false;"{% endif %}
+            >
+              <svg width="15" height="15" fill="#fff" viewBox="0 0 24 24">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+              </svg>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    
+
 <hr class="line">
 
+
+
 <div class="social-share-row">
-        <a class="social-button facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://example.com" target="_blank">
-          <i class="fab fa-facebook-f"></i> Facebook
-        </a>
-        <a class="social-button twitter" href="https://twitter.com/intent/tweet?url=https://example.com" target="_blank">
-          <i class="fab fa-twitter"></i> Twitter
-        </a>
-        <a class="social-button whatsapp" href="https://api.whatsapp.com/send?text=Confira%20isso:%20https://example.com" target="_blank">
-          <i class="fab fa-whatsapp"></i> WhatsApp
-        </a>
-        <a class="social-button email" href="mailto:?subject=Confira isso&body=Veja este link: https://example.com">
-          <i class="fas fa-envelope"></i> Email
-        </a>
-        <a class="social-button threads" href="https://www.threads.net/share?url=https://example.com" target="_blank">
-          <i class="fas fa-at"></i> Threads
-        </a>
-    </div>
+  <a class="social-button facebook"
+     href="https://www.facebook.com/sharer/sharer.php?u= Confira no JIFB:{{ request.build_absolute_uri }}"
+     target="_blank">
+    <i class="fab fa-facebook-f"></i> Facebook
+  </a>
+
+  <a class="social-button twitter"
+     href="https://twitter.com/intent/tweet?url= Confira no JIFB:{{ request.build_absolute_uri }}"
+     target="_blank">
+    <i class="fab fa-twitter"></i> Twitter
+  </a>
+
+  <a class="social-button whatsapp"
+     href="https://api.whatsapp.com/send?text= Confira no JIFB:{{ noticia.titulo }} - {{ request.build_absolute_uri }}"
+     target="_blank">
+    <i class="fab fa-whatsapp"></i> WhatsApp
+  </a>
+
+
+
+  <a class="social-button threads"
+     href="https://www.threads.net/share?url= Confira no JIFB:{{ request.build_absolute_uri }}"
+     target="_blank">
+    <i class="fas fa-at"></i> Threads
+  </a>
+</div>
 </div>
 
 
 <script>
+
+
   const form = document.getElementById("form-comentario");
   if (form) {
     form.addEventListener("submit", function (e) {
@@ -93,6 +138,8 @@
       });
     });
   }
+
+
 </script>
 
    
