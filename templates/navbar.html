@@ -26,10 +26,16 @@
               Ações
             </a>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
-                <li><a class="dropdown-item" href="{% url 'register'%}">Register</a></li>
-                <li><hr class="dropdown-divider"></li>
+              {% if request.user.is_authenticated %}
+                <li><a class="dropdown-item" href="{% url 'logout' %}">Sair</a></li>
+              
+              {% else %}
+                <li><a class="dropdown-item" href="{% url 'login' %}">Entrar</a></li>
+                <li><a class="dropdown-item" href="{% url 'register'%}">Registre-se</a></li>
+              {% endif %}
+
             </ul>
+            {% if request.user.is_staff %}
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Aréa do Jornalista
@@ -38,6 +44,7 @@
                   <li><a class="dropdown-item" href="{% url 'publicar' %}">Publicar</a></li>
                 </ul>
             </li>
+            {% endif %}
           </ul>
             <form class="d-flex" role="search" method="GET" action="{% url 'procurar' %}">
               <input class="form-control me-2" name="q" type="text" placeholder="Pesquisar" aria-label="Pesquisar">
