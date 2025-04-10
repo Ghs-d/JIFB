@@ -14,24 +14,18 @@
 <body>
 
 {% include 'navbar.html' %}
-
-<div class="login-container">
-    <h2>Registre-se</h2>
-    <form id="registerForm">
-        <div class="mb-3">
-            <input type="text" id="username" class="form-control" placeholder="Digite seu nome de usuário" required>
-        </div>
-        <div class="mb-3">
-            <input type="email" id="email" class="form-control" placeholder="Digite seu Gmail" required>
-        </div>
-        <div class="mb-3">
-            <input type="password" id="password" class="form-control" placeholder="Digite sua senha" required>
-        </div>
-        <button type="submit" class="btn btn-primary w-100">Registrar</button>
-    </form>
-    <p class="error-message" id="errorMessage"></p>
-    <p class="success-message" id="successMessage">Registro bem-sucedido!</p>
-</div>
+<section>
+    <div class="login-container">
+        <h2>Registre-se</h2>
+        <form method="POST">
+            {{ form.as_p }}
+        </form>
+        <p>Já possui uma conta?</p>
+        <a href="{% url 'login' %}">Entrar</a>
+        <p class="error-message" id="errorMessage"></p>
+        <p class="success-message" id="successMessage">Registro bem-sucedido!</p>
+    </div>
+</section>
 
 {% include 'footer.html' %}
 

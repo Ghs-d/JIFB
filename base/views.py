@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import UserCreationForm
 from django.core import exceptions
 from django.contrib import messages
 from django.http import HttpResponse
@@ -27,8 +28,11 @@ def NoticiaRedirect(request):
 
 def LoginPage(request):
 
+    if request.user.is_authenticated:
+        return redirect('home')
+
     if request.method == 'POST':
-        username = request.POST.get('username')
+        username = request.POST.get('username').lower()
         password = request.POST.get('password')
 
         try:
@@ -50,7 +54,19 @@ def LoginPage(request):
     return render(request, 'base/login.html', context)
 
 def RegisterUser(request):
-    return render(request, 'base/register.html')
+    form = UserCreationForm()
+
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid:
+            user = form.save(commit=False)
+            user.username = user.username.lower()
+            user.save()
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.error(request, 'Ocorreu um erro durante o registro!')
+    return render(request, 'base/register.html', {'form':form})
 
 @login_required(login_url='/login')
 def LogoutUser(request):
