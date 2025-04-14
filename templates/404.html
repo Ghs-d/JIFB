@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,8 +27,8 @@
         <form class="d-flex" role="search" method="GET" action="{% url 'feed' %}">
             <button class="error__button error__button--active">Ver notícias</button>
         </form>
-        <form class="d-flex" role="search" method="GET" action="{{request.META.HTTP_REFERER}}">
-            <button class="error__button">Voltar</button>
+        <form class="d-flex" role="search" method="GET" action="{% url 'home' %}">
+            <button class="error__button">Página Inicial</button>
         </form>
         </div>
 

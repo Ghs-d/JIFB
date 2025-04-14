@@ -12,142 +12,132 @@
 <body>
 
   {% include 'navbar.html'%}
-
-
-
   <div class="noticia">
-    <h1> {{ noticia.título }}<h1> 
-    {% if request.user.is_staff == True %}
-      <a href="{% url 'editar' noticia.id %}">Editar</a>
-      <a href="{% url 'excluir' noticia.id %}">Excluir</a>
-      {% endif %}
-    <div class="info">Publicado em {{ noticia.created }} por <span class="autor">{{ noticia.autor }}</span></div>
-    
-    
-    <img src="{% static 'media/' %}{{ noticia.capa_noticia }}" alt="Capa da Notícia" class="capa">
+      <h1> {{ noticia.título }}</h1> 
+      {% if request.user.is_staff == True %}
+        <a href="{% url 'editar' noticia.id %}">Editar</a>
+        <a href="{% url 'excluir' noticia.id %}">Excluir</a>
+        {% endif %}
+      <div class="info">Publicado em {{ noticia.created }} por <span class="autor">
+        {{ noticia.autor }}</span>
+      </div>
+      
+      
+      <img src="{% static 'media/' %}{{ noticia.capa_noticia }}" alt="Capa da Notícia" class="capa">
 
-    <include src="{% static 'media/' %}{{ conteudo_html }}" class="">
+      <include src="{% static 'media/' %}{{ conteudo_html }}" class="">
 
-    </include>
+      </include>
   </div> 
 
-    <div class="comentarios-lista card">
-      <div class="title">Comentários</div>
-    
+  <div class="comentarios-lista card">
+    <div class="title">Comentários</div>
+    <div class="text-box">
+      <form method="POST" id="form-comentario" action="">
+        {% csrf_token %}
+          <div class="box-container">
+            <textarea 
+              name="body" 
+              placeholder="Escreva um comentário..." 
+            ></textarea>
+          </div>
+            <div class="formatting">
+              <input type="submit" class="btn btn-outline-success"></input>
+            </div>
+      </form>
+    </div>
       {% if comentarios %}
         <div class="comment-container">
           {% for comentario in comentarios %}
             <div class="user">
               <div class="user-pic">
-                <img src="{% static 'img/default-avatar.png' %}" alt="Avatar" style="width: 100%; height: 100%;">
+                <img src="{% static 'JIFB/foto.jpg' %}" alt="Avatar" style="width: 100%; height: 100%;">
               </div>
               <div class="user-info">
-                <span>{{ comentario.usuario.username }}</span>
-                <p>{{ comentario.data_postagem|date:"d M Y - H:i" }}</p>
+                <span>@{{ comentario.user.username }}</span>
+                <p>{{ comentario.created|date:"d M Y - H:i" }}</p>
               </div>
             </div>
-            <div class="comment-content">{{ comentario.texto }}</div>
+            <div class="comment-content">{{ comentario.body }}</div>
           {% endfor %}
         </div>
       {% endif %}
-    
-      <div class="text-box">
-        <form method="post" id="form-comentario" action="{% if user.is_authenticated %}#{% else %}{% url 'login' %}{% endif %}">
-          {% csrf_token %}
-          <div class="box-container">
-            <textarea 
-              name="comentario" 
-              placeholder="Escreva um comentário..." 
-  
-            ></textarea>
-          </div>
-          <div class="formatting">
-            <button 
-              type="submit" 
-              class="send" 
-              {% if not user.is_authenticated %}onclick="window.location.href='{% url 'login' %}'; return false;"{% endif %}
-            >
-              <svg width="15" height="15" fill="#fff" viewBox="0 0 24 24">
-                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-              </svg>
-            </button>
-          </div>
-        </form>
-      </div>
     </div>
-    
-
-<hr class="line">
-
-
-
-<div class="social-share-row">
-  <a class="social-button facebook"
-     href="https://www.facebook.com/sharer/sharer.php?u= Confira no JIFB:{{ request.build_absolute_uri }}"
-     target="_blank">
-    <i class="fab fa-facebook-f"></i> Facebook
-  </a>
-
-  <a class="social-button twitter"
-     href="https://twitter.com/intent/tweet?url= Confira no JIFB:{{ request.build_absolute_uri }}"
-     target="_blank">
-    <i class="fab fa-twitter"></i> Twitter
-  </a>
-
-  <a class="social-button whatsapp"
-     href="https://api.whatsapp.com/send?text= Confira no JIFB:{{ noticia.titulo }} - {{ request.build_absolute_uri }}"
-     target="_blank">
-    <i class="fab fa-whatsapp"></i> WhatsApp
-  </a>
-
-
-
-  <a class="social-button threads"
-     href="https://www.threads.net/share?url= Confira no JIFB:{{ request.build_absolute_uri }}"
-     target="_blank">
-    <i class="fas fa-at"></i> Threads
-  </a>
-</div>
-</div>
+    <hr class="line">
+  </div>
 
 
 <script src="https://unpkg.com/htmlincludejs"></script>
-<script>
 
-
-  const form = document.getElementById("form-comentario");
-  if (form) {
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      const comentario = document.getElementById("comentario").value;
-
-      fetch("/api/comentarios/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": "{{ csrf_token }}",
-        },
-        body: JSON.stringify({ texto: comentario }),
-      })
-      .then(res => res.json())
-      .then(data => {
-        alert("Comentário enviado!");
-        form.reset();
-      })
-      .catch(err => {
-        alert("Erro ao enviar.");
-        console.error(err);
-      });
-    });
-  }
-
-
-</script>
 
 
 {% include 'footer.html' %}
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
+
+
+
+<!--  <div class="social-share-row">
+      <a class="social-button facebook"
+        href="https://www.facebook.com/sharer/sharer.php?u= Confira no JIFB:{{ request.build_absolute_uri }}"
+        target="_blank">
+        <i class="fab fa-facebook-f"></i> Facebook
+      </a>
+
+      <a class="social-button twitter"
+        href="https://twitter.com/intent/tweet?url= Confira no JIFB:{{ request.build_absolute_uri }}"
+        target="_blank">
+        <i class="fab fa-twitter"></i> Twitter
+      </a>
+
+      <a class="social-button whatsapp"
+        href="https://api.whatsapp.com/send?text= Confira no JIFB:{{ noticia.titulo }} - {{ request.build_absolute_uri }}"
+        target="_blank">
+        <i class="fab fa-whatsapp"></i> WhatsApp
+      </a>
+
+
+
+      <a class="social-button threads"
+        href="https://www.threads.net/share?url= Confira no JIFB:{{ request.build_absolute_uri }}"
+        target="_blank">
+        <i class="fas fa-at"></i> Threads
+      </a>
+    </div>
+    
+      <script>
+
+
+    const form = document.getElementById("form-comentario");
+    if (form) {
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const comentario = document.getElementById("comentario").value;
+
+        fetch("/api/comentarios/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": "{{ csrf_token }}",
+          },
+          body: JSON.stringify({ texto: comentario }),
+        })
+        .then(res => res.json())
+        .then(data => {
+          alert("Comentário enviado!");
+          form.reset();
+        })
+        .catch(err => {
+          alert("Erro ao enviar.");
+          console.error(err);
+        });
+      });
+    }
+  </script>
+    
+    
+    -->

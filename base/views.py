@@ -1,22 +1,15 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.forms import modelformset_factory
-from django.core.exceptions import MultipleObjectsReturned
+from pathlib import Path
 from django.db.models import Q
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import UserCreationForm
-from django.core import exceptions
 from django.contrib import messages
 from django.http import HttpResponse
-import os
-from pathlib import Path
-import pathlib
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import render, get_object_or_404, redirect
 
-from .models import Noticia, ArquivoNaNoticia
+from .models import Noticia, ArquivoNaNoticia, Mensagem
 from .forms import NoticiaForm, ArquivosForm, ArquivoFormSet
-
-BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 def QuemSomosPage(request):
@@ -26,6 +19,8 @@ def QuemSomosPage(request):
 def NoticiaRedirect(request):
     return redirect('feed')
 
+def NotFoundPage(request):
+    return render(request, '404.html')
 
 def LoginPage(request):
 
@@ -33,7 +28,7 @@ def LoginPage(request):
         return redirect('home')
 
     if request.method == 'POST':
-        username = request.POST.get('username')
+        username = request.POST.get('username').lower()
         password = request.POST.get('password')
 
         try:
@@ -61,7 +56,7 @@ def RegisterUser(request):
         form = UserCreationForm(request.POST)
         if form.is_valid:
             user = form.save(commit=False)
-            user.username = user.username
+            user.username = user.username.lower()
             user.save()
             login(request, user)
             return redirect('home')
@@ -134,16 +129,44 @@ def NoticiaPage(request, pk):
 
         arquivos = list(ArquivoNaNoticia.objects.filter(noticia=noticia).values('arquivos'))
  
+        comentarios = list(Mensagem.objects.filter(noticia=noticia))
+
         print(noticia)
-        if noticia.visivel == False:
+        if noticia.visivel == True:
+            conteudo_html = noticia.corpo
+
+            if request.method == 'POST':
+                Mensagem.objects.create(
+                    user=request.user,
+                    noticia=noticia,
+                    body=request.POST.get('body')
+                )
+                return redirect('noticia', pk=noticia.id)
+
+
+            context = {
+                'conteudo_html':conteudo_html,
+                'noticia':noticia,
+                'arquivos':arquivos,
+                'comentarios':comentarios
+            }
+            return render(request, "base/template_news.html", context)
+        
+        elif noticia.visivel == False and request.user.is_staff == True:
             conteudo_html = noticia.corpo
 
             context = {
                 'conteudo_html':conteudo_html,
                 'noticia':noticia,
                 'arquivos':arquivos,
+                'comentarios':comentarios
             }
             return render(request, "base/template_news.html", context)
+        
+
+        elif noticia.visivel == False and request.user.is_staff == False:
+            return redirect('feed')
+        
         else:
             return redirect('feed')
         

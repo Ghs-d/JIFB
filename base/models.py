@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django import forms
 
 
 class Noticia(models.Model):
@@ -32,8 +31,8 @@ class Mensagem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     noticia = models.ForeignKey(Noticia, on_delete=models.CASCADE)
     body = models.TextField()
-    gostei = models.IntegerField(blank=True, null=True)
-    Não_gostei = models.IntegerField(blank=True, null=True)
+    like = models.IntegerField(blank=True, null=True, default=0)
+    dislike = models.IntegerField(blank=True, null=True, default=0)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     
