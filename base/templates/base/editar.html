@@ -14,31 +14,29 @@
     {% include 'navbar.html' %}
  
     <div>
-      <form enctype="multipart/form-data" method="POST">
+      <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
+        
+        {{ noticia_form.as_p }}
+      
+        <h3>Arquivos Existentes</h3>
+        {{ arquivos_formset.management_form }}
+        {% for form in arquivos_formset %}
+          <div class="arquivo-box">
+            {{ form.id }}
+            {{ form.arquivos.label_tag }} {{ form.arquivos }}
+            {{ form.nome.label_tag }} {{ form.nome }}
+            <label>
+              {{ form.DELETE }} Excluir
+            </label>
+          </div>
+        {% endfor %}
+          
+          <h3>Adicionar novos arquivos</h3>
+          <input type="file" name="novos_arquivos" multiple>
+          <br>
+        <input class="btn btn-outline-success" type="submit" value="Enviar">Salvar alterações</input>
 
-          {{noticia_form.as_p }}
-          {{arquivo_form.management_form }}
-
-          {% for form in arquivo_form %}
-            <div class="arquivo-item">
-                {{ form.as_p  }}
-
-                {% if form.instance.pk and form.instance.arquivos %}
-                    <p>Arquivo atual: 
-                      <a href="{% url 'home' %}static{{ form.instance.arquivo.url }}">
-                        {{ form.instance.arquivo.name }}
-                      </a>
-                    </p>
-                {% endif %}
-
-                {% if form.can_delete %}
-                    <label>Excluir: {{ form.DELETE }}</label>
-                {% endif %}
-            </div>
-          {% endfor %}
-
-        <input type="submit" class="btn btn-outline-success" value="Enviar">
       </form>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

@@ -11,9 +11,10 @@ from django.contrib import messages
 from django.http import HttpResponse
 import os
 from pathlib import Path
+import pathlib
 
 from .models import Noticia, ArquivoNaNoticia
-from .forms import NoticiaForm, ArquivosForm
+from .forms import NoticiaForm, ArquivosForm, ArquivoFormSet
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -32,7 +33,7 @@ def LoginPage(request):
         return redirect('home')
 
     if request.method == 'POST':
-        username = request.POST.get('username').lower()
+        username = request.POST.get('username')
         password = request.POST.get('password')
 
         try:
@@ -60,7 +61,7 @@ def RegisterUser(request):
         form = UserCreationForm(request.POST)
         if form.is_valid:
             user = form.save(commit=False)
-            user.username = user.username.lower()
+            user.username = user.username
             user.save()
             login(request, user)
             return redirect('home')
@@ -126,43 +127,6 @@ def NoticiaPublicar(request):
     }
     return render(request, "base/noticia_form.html", context)
 
-@login_required(login_url='/login')
-def NoticiaEditar(request, pk):
-    noticia = get_object_or_404(Noticia, pk=pk)
-
-
-    if not request.user.is_staff:
-        return HttpResponse("<h1>Somente o autor pode alterar alguma coisa dessa notícia!</h1>")
-
-
-    if request.method == 'POST':
-
-        noticia_form = NoticiaForm(request.POST, request.FILES, instance=noticia)
-
-        arquivos = request.FILES.getlist('arquivos')
-        print(arquivos)
-        if noticia_form.is_valid():
-            os.remove(os.path.join(BASE_DIR/ 'static', 'media', noticia.capa_noticia))
-            os.remove(os.path.join(BASE_DIR/ 'static', 'media', noticia.corpo))
-
-            noticia = noticia_form.save(commit=False)
-            noticia.autor = request.user
-            noticia.save()
-            
-            for arq in arquivos:
-                ArquivoNaNoticia.objects.create(noticia=noticia, arquivos=arq)
-
-            return redirect('home')
-
-    else:
-        noticia_form = NoticiaForm(instance=noticia)
-
-    context = {
-        'noticia_form': noticia_form,
-    }
-    return render(request, "base/editar.html", context)
-
-
 
 def NoticiaPage(request, pk):
     if pk.isnumeric():
@@ -171,7 +135,7 @@ def NoticiaPage(request, pk):
         arquivos = list(ArquivoNaNoticia.objects.filter(noticia=noticia).values('arquivos'))
  
         print(noticia)
-        if noticia.visivel == True:
+        if noticia.visivel == False:
             conteudo_html = noticia.corpo
 
             context = {
@@ -194,6 +158,73 @@ def NoticiaPage(request, pk):
 
     else:
         return redirect('home')
+    
+    
+@login_required(login_url='/login')
+def NoticiaEditar(request, pk):
+
+    noticia = Noticia.objects.get(id=pk)
+
+    if not request.user.is_staff:
+        return HttpResponse("<h1>Somente o autor pode alterar alguma coisa dessa notícia!</h1>")
+
+
+    if request.method == 'POST':
+
+        noticia_form = NoticiaForm(request.POST, request.FILES, instance=noticia)
+        arquivos_formset = ArquivoFormSet(request.POST, request.FILES, queryset=ArquivoNaNoticia.objects.filter(noticia=noticia))
+        arquivos = ArquivoNaNoticia.objects.filter(noticia=noticia)
+
+
+        if noticia_form.is_valid() and arquivos_formset.is_valid():
+            noticia = noticia_form.save(commit=False)
+            noticia.autor = request.user
+            arquivos = arquivos_formset.save(commit=False)
+            noticia_form.save()
+            
+            # Esse loop vai salvar os arquivos editados
+            for arquivo in arquivos:
+                arquivo.noticia = noticia
+                arquivo.save()
+            print(f"Arquivos marcados pra deletar: {[a.id for a in arquivos_formset.deleted_objects]}")
+            
+            # Esse loop vai deletar os arquivos
+            for obj in arquivos_formset.deleted_objects:
+                arquivos = ArquivoNaNoticia.objects.filter(noticia=obj.noticia)
+
+                for arquivo in arquivos:
+                    try:
+                        Path(arquivo.arquivos.path).unlink(missing_ok=True)  # apaga do disco
+                        arquivo.delete()  # apaga do banco
+                    except Exception as e:
+                        print(f"Erro ao excluir {arquivo.arquivos.name}: {e}")
+
+                obj.delete()  
+
+                
+            novos_arquivos = request.FILES.getlist('novos_arquivos')
+            
+            # Esse loop vai criar novos Arquivos
+            for arq in novos_arquivos:
+                ArquivoNaNoticia.objects.create(noticia=noticia, arquivos=arq)
+            
+            return redirect('home')
+
+    else:
+        noticia_form = NoticiaForm(instance=noticia)
+        arquivos_formset = ArquivoFormSet(queryset=ArquivoNaNoticia.objects.filter(noticia=noticia))
+
+
+
+    context = {
+        'noticia_form': noticia_form,
+        'arquivos_formset': arquivos_formset,
+        'noticia': noticia
+    }
+    return render(request, "base/editar.html", context)
+
+
+
 
 @login_required(login_url='/login')
 def NoticiaExcluir(request, pk):
@@ -203,14 +234,23 @@ def NoticiaExcluir(request, pk):
         return HttpResponse("<h1>Somente o autor pode alterar alguma coisa dessa notícia!</h1>")
 
     if request.method == 'POST':
-        os.remove(os.path.join(BASE_DIR/ 'static', 'media', noticia.capa_noticia))
-        os.remove(os.path.join(BASE_DIR/ 'static', 'media', noticia.corpo))
-        arquivos = list(ArquivoNaNoticia.objects.filter(noticia=noticia).values('arquivos'))
+        # Exclui arquivos relacionados à notícia
+        arquivos = ArquivoNaNoticia.objects.filter(noticia=noticia.id)
         for arquivo in arquivos:
-            os.remove(os.path.join(BASE_DIR/ 'static', 'media', arquivo.arquivos))
-
+            try:
+                Path(arquivo.arquivos.path).unlink(missing_ok=True)
+            except Exception as e:
+                print(f"Erro ao excluir : {e}")
+        arquivos.delete()
         
+        
+        # Exclui possíveis arquivos diretos da notícia
+        if noticia.capa_noticia:
+            Path(noticia.capa_noticia.path).unlink(missing_ok=True)
+        if noticia.corpo:
+            Path(noticia.corpo.path).unlink(missing_ok=True)
+
         noticia.delete()
         return redirect('feed')
 
-    return render(request, "base/excluir.html", {'obj':noticia})
+    return render(request, "base/excluir.html", {'obj': noticia})

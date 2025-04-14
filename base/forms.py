@@ -1,7 +1,7 @@
 from django.forms import ModelForm
 from .models import Noticia, ArquivoNaNoticia
 from django import forms
-
+from django.forms import modelformset_factory
 
 class MultipleFileInput(forms.ClearableFileInput):
     allow_multiple_selected = True
@@ -41,3 +41,14 @@ class ArquivosForm(forms.ModelForm):
         widgets = {
             'arquivos': MultipleFileInput(attrs={'class': 'form-control'})
         }
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['arquivos'].required = False
+
+ArquivoFormSet = modelformset_factory(
+    ArquivoNaNoticia, 
+    form=ArquivosForm, 
+    extra=0, 
+    can_delete=True
+    )
