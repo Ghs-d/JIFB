@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Noticia, ArquivoNaNoticia
+from .models import Noticia, ArquivoNaNoticia, Perfil
 from django import forms
 from django.forms import modelformset_factory
 
@@ -32,6 +32,8 @@ class NoticiaForm(ModelForm):
             'capa_noticia': forms.ClearableFileInput(attrs={'class': 'form-control'}),
             'visivel': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
+
+
 
 class ArquivosForm(forms.ModelForm):
     arquivos = MultipleFileField()

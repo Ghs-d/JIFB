@@ -1,15 +1,15 @@
-from pathlib import Path
-from django.db.models import Q
-from django.contrib import messages
-from django.http import HttpResponse
-from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User, Group
+from django.http import HttpResponse
+from django.contrib import messages
+from django.db.models import Q
+from pathlib import Path
 
-from .models import Noticia, ArquivoNaNoticia, Mensagem
 from .forms import NoticiaForm, ArquivosForm, ArquivoFormSet
+from .models import Noticia, ArquivoNaNoticia, Mensagem, Perfil
 
 
 def QuemSomosPage(request):
@@ -58,6 +58,10 @@ def RegisterUser(request):
             user = form.save(commit=False)
             user.username = user.username.lower()
             user.save()
+            Perfil.objects.create(
+                user=user,
+                pode_comentar=True
+            )
             login(request, user)
             return redirect('home')
         else:
@@ -136,12 +140,19 @@ def NoticiaPage(request, pk):
             conteudo_html = noticia.corpo
 
             if request.method == 'POST':
-                Mensagem.objects.create(
-                    user=request.user,
-                    noticia=noticia,
-                    body=request.POST.get('body')
-                )
-                return redirect('noticia', pk=noticia.id)
+                if not request.user.is_authenticated:
+                    return redirect('login')
+                
+                elif request.user.perfil.pode_comentar == False:
+                    return HttpResponse('<h1>Você está proibido de comentar</h1>')
+
+                else:
+                    Mensagem.objects.create(
+                        user=request.user,
+                        noticia=noticia,
+                        body=request.POST.get('body')
+                    )
+                    return redirect('noticia', pk=noticia.id)
 
 
             context = {
