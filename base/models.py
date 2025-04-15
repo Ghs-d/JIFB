@@ -2,8 +2,25 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Perfil(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    pode_comentar = models.BooleanField(default=True)
+    user = models.OneToOneField(
+        User, 
+        on_delete=models.CASCADE
+        )
+    
+    bio = models.TextField(default="Eu sou novo aqui!")
+    
+    foto_de_perfil = models.ImageField(
+        default="foto_de_perfis/default.jpg", 
+        upload_to="foto_de_perfis/"
+        )
+    
+    pode_comentar = models.BooleanField(
+        default=True
+        )
+    
+    pode_alterar_foto_de_perfil = models.BooleanField(
+        default=True
+        )
 
     def __str__(self):
         return self.user.username
@@ -33,8 +50,8 @@ class ArquivoNaNoticia(models.Model):
 
 
 
-class Mensagem(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+class Comentario(models.Model):
+    autor = models.ForeignKey(Perfil, on_delete=models.CASCADE)
     noticia = models.ForeignKey(Noticia, on_delete=models.CASCADE)
     body = models.TextField()
     like = models.IntegerField(blank=True, null=True, default=0)

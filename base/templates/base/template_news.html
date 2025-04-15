@@ -13,6 +13,11 @@
 
   {% include 'navbar.html'%}
   <div class="noticia">
+    {% if noticia.visivel == False and request.user.is_staff == True %}
+
+    <h3>{{aviso}}</h3>
+
+    {% endif %}
       <h1> {{ noticia.título }}</h1> 
       {% if request.user.is_staff == True %}
         <a href="{% url 'editar' noticia.id %}">Editar</a>
@@ -51,10 +56,12 @@
           {% for comentario in comentarios %}
             <div class="user">
               <div class="user-pic">
-                <img src="{% static 'JIFB/foto.jpg' %}" alt="Avatar" style="width: 100%; height: 100%;">
+                <a href="{% url 'user' comentario.autor.user.username %}">
+                  <img src="{% static 'media/' %}{{comentario.autor.foto_de_perfil}}" alt="Avatar" style="width: 100%; height: 100%;">
+                </a>
               </div>
               <div class="user-info">
-                <span>@{{ comentario.user.username }}</span>
+                  <span>@{{ comentario.autor.user.username }}</span>
                 <p>{{ comentario.created|date:"d M Y - H:i" }}</p>
               </div>
               <div class="dropdown ms-auto">

@@ -12,7 +12,7 @@ urlpatterns = [
     path('register/', views.RegisterUser, name='register'),
 
     path('noticia/', views.NoticiaRedirect),
-    path('procurar', views.Procurar, name='procurar'),
+    path('procurar/', views.Procurar, name='procurar'),
 
     path('quem-somos/', views.QuemSomosPage, name='quem_somos'),
     path('publicar/', views.NoticiaPublicar, name='publicar'),
@@ -21,5 +21,11 @@ urlpatterns = [
     path('excluir/<str:pk>/', views.NoticiaExcluir, name='excluir'),
     path('noticia/<str:pk>/', views.NoticiaPage, name='noticia'),
     path('noticia/feed/', views.NoticiaPage, name='feed'),
+
+
+    path('@<str:pk>', views.profile_user, name='user'),
+
+
+
 
 ]

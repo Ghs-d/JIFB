@@ -7,9 +7,9 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.db.models import Q
 from pathlib import Path
-
+from django.core import exceptions
 from .forms import NoticiaForm, ArquivosForm, ArquivoFormSet
-from .models import Noticia, ArquivoNaNoticia, Mensagem, Perfil
+from .models import Noticia, ArquivoNaNoticia, Comentario, Perfil
 
 
 def QuemSomosPage(request):
@@ -60,7 +60,8 @@ def RegisterUser(request):
             user.save()
             Perfil.objects.create(
                 user=user,
-                pode_comentar=True
+                pode_comentar=True,
+                pode_alterar_foto_de_perfil=True
             )
             login(request, user)
             return redirect('home')
@@ -133,7 +134,7 @@ def NoticiaPage(request, pk):
 
         arquivos = list(ArquivoNaNoticia.objects.filter(noticia=noticia).values('arquivos'))
  
-        comentarios = list(Mensagem.objects.filter(noticia=noticia))
+        comentarios = list(Comentario.objects.filter(noticia=noticia))
 
         print(noticia)
         if noticia.visivel == True:
@@ -147,7 +148,7 @@ def NoticiaPage(request, pk):
                     return HttpResponse('<h1>Você está proibido de comentar</h1>')
 
                 else:
-                    Mensagem.objects.create(
+                    Comentario.objects.create(
                         user=request.user,
                         noticia=noticia,
                         body=request.POST.get('body')
@@ -170,7 +171,8 @@ def NoticiaPage(request, pk):
                 'conteudo_html':conteudo_html,
                 'noticia':noticia,
                 'arquivos':arquivos,
-                'comentarios':comentarios
+                'comentarios':comentarios,
+                'aviso':"Essa notícia não está visível para os usuários"
             }
             return render(request, "base/template_news.html", context)
         
@@ -288,3 +290,21 @@ def NoticiaExcluir(request, pk):
         return redirect('feed')
 
     return render(request, "base/excluir.html", {'obj': noticia})
+
+
+
+
+
+def profile_user(request, pk):
+    usuario = User.objects.get(username=pk)
+
+    perfil = Perfil.objects.get(user=usuario)
+    foto_perfil = perfil.foto_de_perfil
+    print(foto_perfil)
+
+    context = {
+        "usuario":usuario,
+        "foto_perfil":foto_perfil,
+        "perfil":perfil
+    }
+    return render(request, "base/profile_user.html", context)
