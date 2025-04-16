@@ -22,8 +22,8 @@ urlpatterns = [
     path('noticia/<str:pk>/', views.NoticiaPage, name='noticia'),
     path('noticia/feed/', views.NoticiaPage, name='feed'),
 
-
-    path('@<str:pk>', views.profile_user, name='user'),
+    path('u/', views.),
+    path('u/<str:pk>', views.profile_user, name='user'),
 
 
 
