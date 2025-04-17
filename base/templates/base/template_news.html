@@ -43,6 +43,7 @@
           <div class="box-container">
             <textarea 
               name="body" 
+              id="body" 
               placeholder="Escreva um comentário..." 
             ></textarea>
           </div>
@@ -52,7 +53,7 @@
       </form>
     </div>
       {% if comentarios %}
-        <div class="comment-container">
+        <div class="comment-container" id="lista-comentarios">
           {% for comentario in comentarios %}
             <div class="user">
               <div class="user-pic">
@@ -96,6 +97,55 @@
 {% include 'footer.html' %}
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).on('submit', '#form-comentario', function(e) {
+    e.preventDefault();
+
+    $.ajax({
+      type: 'POST',
+      url: window.location.href,
+      data: {
+        body: $("#body").val(),
+        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+      },
+      success: function(data) {
+        const novoComentario = `
+          <div class="user" id="comentario-${data.id}">
+            <div class="user-pic">
+              <a href="/user/${data.autor}">
+                <img src="{% static '' %}${data.foto.slice(1)}" alt="Avatar" style="width: 100%; height: 100%;">
+              </a>
+            </div>
+            <div class="user-info">
+              <span>@${data.autor}</span>
+              <p>${data.data}</p>
+            </div>
+            <div class="dropdown ms-auto">
+              <i class="fas fa-ellipsis-vertical" data-bs-toggle="dropdown" aria-expanded="false"></i>
+              <ul class="dropdown-menu">
+                <li>
+                  <span class="dropdown-item"><i class="fas fa-pen mx-2"></i> Ainda em desenvolvimento</span>
+                </li>
+                <li>
+                  <span class="dropdown-item"><i class="fas fa-trash mx-2"></i> Ainda em desenvolvimento</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="comment-content">${data.body}</div>
+        `;
+
+        $('#lista-comentarios').append(novoComentario);
+        $("#body").val(""); // limpa campo
+      },
+      error: function(xhr) {
+        let mensagem = xhr.responseJSON?.error || 'Erro ao comentar.';
+        alert(mensagem);
+      }
+    });
+  });
+</script>
 
 </body>
 </html>

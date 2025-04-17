@@ -7,10 +7,9 @@ class Perfil(models.Model):
         on_delete=models.CASCADE
         )
     
-    bio = models.TextField(default="Eu sou novo aqui!")
+    bio = models.TextField(blank=True, null=True)
     
     foto_de_perfil = models.ImageField(
-        default="foto_de_perfis/default.jpg", 
         upload_to="foto_de_perfis/"
         )
     

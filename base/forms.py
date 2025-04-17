@@ -33,6 +33,16 @@ class NoticiaForm(ModelForm):
             'visivel': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
 
+class EditarUserProfileForm(ModelForm):
+    class Meta:
+        model = Perfil
+        fields = ['bio', 'foto_de_perfil']
+        exclude = ['user']
+        widgets = {
+            'bio': forms.TextInput(attrs={'class': 'form-control'}),
+            'foto_de_perfil': forms.FileInput(attrs={'class': 'form-control'}),
+        }
+
 
 
 class ArquivosForm(forms.ModelForm):

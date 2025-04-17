@@ -3,12 +3,13 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
+from django.core import exceptions
 from django.db.models import Q
 from pathlib import Path
-from django.core import exceptions
-from .forms import NoticiaForm, ArquivosForm, ArquivoFormSet
+
+from .forms import NoticiaForm, ArquivosForm, ArquivoFormSet, EditarUserProfileForm
 from .models import Noticia, ArquivoNaNoticia, Comentario, Perfil
 
 
@@ -16,8 +17,8 @@ def QuemSomosPage(request):
     return render(request, 'base/quemsomos.html')
 
 
-def NoticiaRedirect(request):
-    return redirect('feed')
+def RedirectToHome(request):
+    return redirect('home')
 
 def NotFoundPage(request):
     return render(request, '404.html')
@@ -54,6 +55,7 @@ def RegisterUser(request):
 
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
+        
         if form.is_valid:
             user = form.save(commit=False)
             user.username = user.username.lower()
@@ -61,8 +63,10 @@ def RegisterUser(request):
             Perfil.objects.create(
                 user=user,
                 pode_comentar=True,
-                pode_alterar_foto_de_perfil=True
+                pode_alterar_foto_de_perfil=True,
+                foto_de_perfil="foto_de_perfis/default.jpg"
             )
+
             login(request, user)
             return redirect('home')
         else:
@@ -79,8 +83,13 @@ def LogoutUser(request):
 def HomePage(request):
 
     noticias = Noticia.objects.all().order_by('updated')
+    if request.user.is_authenticated:
+        perfil = Perfil.objects.filter(user=request.user)
+    else:
+        None
     context = {
-        'noticias':noticias
+        'noticias':noticias,
+        'perfil':perfil
     }
     return render(request, "base/index.html", context)
 
@@ -89,12 +98,13 @@ def Procurar(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     número_de_notícia = 0
     noticias = Noticia.objects.all().order_by('updated').filter(
-        Q(título__icontains=q)
+        Q(título__icontains=q) &
+        Q(visivel=True)
         )
     número_de_notícia = noticias.count()
 
     context = {
-        'noticias':noticias,
+        'noticias':noticias,    
         'número_de_notícia':número_de_notícia
     }
     return render(request, "base/procurar.html", context)
@@ -148,12 +158,19 @@ def NoticiaPage(request, pk):
                     return HttpResponse('<h1>Você está proibido de comentar</h1>')
 
                 else:
-                    Comentario.objects.create(
-                        user=request.user,
+                    comentario = Comentario.objects.create(
+                        autor=Perfil.objects.get(user=request.user),
                         noticia=noticia,
                         body=request.POST.get('body')
                     )
-                    return redirect('noticia', pk=noticia.id)
+
+                    return JsonResponse({
+                        'id': comentario.id,
+                        'body': comentario.body,
+                        'autor': comentario.autor.user.username,
+                        'foto': comentario.autor.foto_de_perfil.url if hasattr(comentario.autor.foto_de_perfil, 'url') else f"/static/media/{comentario.autor.foto_de_perfil}",
+                        'data': comentario.created.strftime('%d %b %Y - %H:%M')
+                    })
 
 
             context = {
@@ -295,7 +312,7 @@ def NoticiaExcluir(request, pk):
 
 
 
-def profile_user(request, pk):
+def UserProfile(request, pk):
     usuario = User.objects.get(username=pk)
 
     perfil = Perfil.objects.get(user=usuario)
@@ -308,3 +325,28 @@ def profile_user(request, pk):
         "perfil":perfil
     }
     return render(request, "base/profile_user.html", context)
+
+def EditarUserProfile(request, pk):
+    usuario = User.objects.get(username=pk)
+
+    perfil = Perfil.objects.get(user=usuario)
+    
+    if request.method == 'POST':
+        Path(perfil.foto_de_perfil.path).unlink(missing_ok=True)
+        profile_form = EditarUserProfileForm(request.POST, request.FILES)
+        
+        if profile_form.is_valid():
+
+            perfil.bio = profile_form.cleaned_data['bio']
+            perfil.foto_de_perfil = profile_form.cleaned_data['foto_de_perfil']
+            
+            perfil.save()
+            return redirect('user', pk)
+
+    else:
+        profile_form = EditarUserProfileForm(instance=perfil)
+
+    context = {
+        "profile_form":profile_form,
+    }
+    return render(request, "base/editar_profile.html", context)
