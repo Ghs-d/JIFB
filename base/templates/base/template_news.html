@@ -68,6 +68,7 @@
               <div class="dropdown ms-auto">
                 <i class="fas fa-ellipsis-vertical" data-bs-toggle="dropdown" aria-expanded="false"></i>
                 <ul class="dropdown-menu">
+                  {% if request.user.is_staff == True or request.user.username == comentario.autor.user.username %}
                   <li>
                     <span class="dropdown-item">
                       <i class="fas fa-pen mx-2"></i> Ainda em desenvolvimento
@@ -80,6 +81,7 @@
                       </a>
                     </span>
                   </li>
+                  {% endif %}
                 </ul>
               </div>
             </div>

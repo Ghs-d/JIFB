@@ -259,7 +259,7 @@ def NoticiaEditar(request, pk):
             for arquivo in arquivos:
                 arquivo.noticia = noticia
                 arquivo.save()
-            print(f"Arquivos marcados pra deletar: {[a.id for a in arquivos_formset.deleted_objects]}")
+            
             
             # Esse loop vai deletar os arquivos
             for obj in arquivos_formset.deleted_objects:
@@ -339,7 +339,7 @@ def UserProfile(request, pk):
 
     perfil = Perfil.objects.get(user=usuario)
     foto_perfil = perfil.foto_de_perfil
-    print(foto_perfil)
+
 
     context = {
         "usuario":usuario,
