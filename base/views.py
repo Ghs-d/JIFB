@@ -20,8 +20,10 @@ def QuemSomosPage(request):
 def RedirectToHome(request):
     return redirect('home')
 
+
 def NotFoundPage(request):
     return render(request, '404.html')
+
 
 def LoginPage(request):
 
@@ -50,6 +52,7 @@ def LoginPage(request):
     }
     return render(request, 'base/login.html', context)
 
+
 def RegisterUser(request):
     form = UserCreationForm()
 
@@ -77,7 +80,6 @@ def RegisterUser(request):
 def LogoutUser(request):
     logout(request)
     return redirect('home')
-
 
 
 def HomePage(request):
@@ -119,7 +121,6 @@ def Procurar(request):
     return render(request, "base/procurar.html", context)
 
 
-
 @login_required(login_url='/login')
 def NoticiaPublicar(request):
     if request.method == 'POST':
@@ -146,6 +147,7 @@ def NoticiaPublicar(request):
         'foto_de_perfil':Perfil.objects.get(user=request.user).foto_de_perfil
     }
     return render(request, "base/noticia_form.html", context)
+
 
 
 def NoticiaPage(request, pk):
@@ -298,7 +300,6 @@ def NoticiaEditar(request, pk):
 
 
 
-
 @login_required(login_url='/login')
 def NoticiaExcluir(request, pk):
     noticia = Noticia.objects.get(id=pk)
@@ -373,3 +374,25 @@ def EditarUserProfile(request, pk):
         "profile_form":profile_form,
     }
     return render(request, "base/editar_profile.html", context)
+
+
+@login_required(login_url='/login')
+def ComentarioExcluir(request, pk):
+    comentario = Comentario.objects.get(id=pk)
+
+    
+
+    if request.method == 'POST':
+        # Exclui arquivos relacionados à notícia
+        if request.user.is_staff == False or request.user.username != comentario.autor.user.username:
+            return HttpResponse("<h1>Somente o autor ou um moderador pode excluir!</h1>")
+        
+        elif request.user.is_staff == True or request.user.username == comentario.autor.user.username:
+            comentario.delete()
+        
+        return redirect('noticia', comentario.noticia.id)
+
+    return render(request, "base/excluir.html", {
+                                                'obj': comentario,
+                                                'foto_de_perfil':Perfil.objects.get(user=request.user).foto_de_perfil
+                                                })

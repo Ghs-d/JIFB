@@ -26,6 +26,7 @@ urlpatterns = [
     path('u/editar/<str:pk>', views.EditarUserProfile, name='editar_user'),
 
 
+    path('excluir-comentario/<str:pk>/', views.ComentarioExcluir, name='excluir-comentario'),
 
 
 ]

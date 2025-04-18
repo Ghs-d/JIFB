@@ -75,7 +75,9 @@
                   </li>
                   <li>
                     <span class="dropdown-item">
-                        <i class="fas fa-trash mx-2"></i> Ainda em desenvolvimento
+                      <a href="{% url 'excluir-comentario' comentario.id %}">
+                        <i class="fas fa-trash mx-2"></i>Excluir
+                      </a>
                     </span>
                   </li>
                 </ul>
@@ -128,7 +130,11 @@
                   <span class="dropdown-item"><i class="fas fa-pen mx-2"></i> Ainda em desenvolvimento</span>
                 </li>
                 <li>
-                  <span class="dropdown-item"><i class="fas fa-trash mx-2"></i> Ainda em desenvolvimento</span>
+                  <span class="dropdown-item">
+                    <a href="/excluir-comentario/${data.id}/">
+                      <i class="fas fa-trash mx-2"></i> Excluir
+                      </a>
+                  </span>
                 </li>
               </ul>
             </div>
