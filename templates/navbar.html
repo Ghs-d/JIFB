@@ -17,7 +17,7 @@
             {% if request.user.is_authenticated %}
             <li class="nav-item">
               <a href="{% url 'user' request.user.username %}">
-                <img src="{% static 'media/' %}{{perfil.foto_de_perfil}}" alt="" style="width: 40px; height: 40px;">  
+                <img src="{% static 'media/' %}{{foto_de_perfil}}" alt="" style="width: 40px; height: 40px;">  
               </a>
             </li>
             {% endif %}

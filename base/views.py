@@ -14,7 +14,7 @@ from .models import Noticia, ArquivoNaNoticia, Comentario, Perfil
 
 
 def QuemSomosPage(request):
-    return render(request, 'base/quemsomos.html')
+    return render(request, 'base/quemsomos.html', {'foto_de_perfil':Perfil.objects.get(user=request.user).foto_de_perfil if request.user.is_authenticated else None})
 
 
 def RedirectToHome(request):
@@ -82,30 +82,39 @@ def LogoutUser(request):
 
 def HomePage(request):
 
-    noticias = Noticia.objects.all().order_by('updated')
+    noticias = Noticia.objects.all().order_by('-updated')
     if request.user.is_authenticated:
         perfil = Perfil.objects.filter(user=request.user)
-    else:
-        None
-    context = {
+        context = {
         'noticias':noticias,
-        'perfil':perfil
+        'perfil':perfil,
+        'foto_de_perfil':Perfil.objects.get(user=request.user).foto_de_perfil
     }
+    else:
+        context = {
+            'noticias':noticias,
+            'perfil':None,
+            'foto_de_perfil':None
+        }
     return render(request, "base/index.html", context)
 
 
 def Procurar(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     número_de_notícia = 0
-    noticias = Noticia.objects.all().order_by('updated').filter(
+    noticias = Noticia.objects.all().order_by('-updated').filter(
         Q(título__icontains=q) &
         Q(visivel=True)
         )
     número_de_notícia = noticias.count()
-
+    if request.user.is_authenticated:  
+        foto_de_perfil = Perfil.objects.get(user=request.user).foto_de_perfil
+    else:
+        foto_de_perfil = None
     context = {
         'noticias':noticias,    
-        'número_de_notícia':número_de_notícia
+        'número_de_notícia':número_de_notícia,
+        'foto_de_perfil':foto_de_perfil
     }
     return render(request, "base/procurar.html", context)
 
@@ -133,7 +142,8 @@ def NoticiaPublicar(request):
         
     context = {
         'arquivo_form':arquivo_form,
-        'noticia_form':noticia_form
+        'noticia_form':noticia_form,
+        'foto_de_perfil':Perfil.objects.get(user=request.user).foto_de_perfil
     }
     return render(request, "base/noticia_form.html", context)
 
@@ -146,7 +156,6 @@ def NoticiaPage(request, pk):
  
         comentarios = list(Comentario.objects.filter(noticia=noticia))
 
-        print(noticia)
         if noticia.visivel == True:
             conteudo_html = noticia.corpo
 
@@ -172,12 +181,16 @@ def NoticiaPage(request, pk):
                         'data': comentario.created.strftime('%d %b %Y - %H:%M')
                     })
 
-
+            if request.user.is_authenticated:  
+                foto_de_perfil = Perfil.objects.get(user=request.user).foto_de_perfil
+            else:
+                foto_de_perfil = None
             context = {
                 'conteudo_html':conteudo_html,
                 'noticia':noticia,
                 'arquivos':arquivos,
-                'comentarios':comentarios
+                'comentarios':comentarios,
+                'foto_de_perfil':foto_de_perfil
             }
             return render(request, "base/template_news.html", context)
         
@@ -189,7 +202,8 @@ def NoticiaPage(request, pk):
                 'noticia':noticia,
                 'arquivos':arquivos,
                 'comentarios':comentarios,
-                'aviso':"Essa notícia não está visível para os usuários"
+                'aviso':"Essa notícia não está visível para os usuários",
+                'foto_de_perfil':Perfil.objects.get(user=request.user).foto_de_perfil
             }
             return render(request, "base/template_news.html", context)
         
@@ -201,11 +215,15 @@ def NoticiaPage(request, pk):
             return redirect('feed')
         
     elif pk == 'feed':
-        noticias = Noticia.objects.all().order_by('updated')
-
+        noticias = Noticia.objects.all().order_by('-updated')
+        if request.user.is_authenticated:  
+            foto_de_perfil = Perfil.objects.get(user=request.user).foto_de_perfil
+        else:
+            foto_de_perfil = None
         context = {
             'noticias':noticias,
-        }
+            'foto_de_perfil':foto_de_perfil
+            }
 
         return render(request, "base/news.html", context)
 
@@ -267,12 +285,14 @@ def NoticiaEditar(request, pk):
         noticia_form = NoticiaForm(instance=noticia)
         arquivos_formset = ArquivoFormSet(queryset=ArquivoNaNoticia.objects.filter(noticia=noticia))
 
+    foto_de_perfil = Perfil.objects.get(user=request.user).foto_de_perfil
 
 
     context = {
         'noticia_form': noticia_form,
         'arquivos_formset': arquivos_formset,
-        'noticia': noticia
+        'noticia': noticia,
+        'foto_de_perfil':foto_de_perfil
     }
     return render(request, "base/editar.html", context)
 
@@ -306,12 +326,13 @@ def NoticiaExcluir(request, pk):
         noticia.delete()
         return redirect('feed')
 
-    return render(request, "base/excluir.html", {'obj': noticia})
+    return render(request, "base/excluir.html", {
+                                                'obj': noticia,
+                                                'foto_de_perfil':Perfil.objects.get(user=request.user).foto_de_perfil
+                                                })
 
 
-
-
-
+@login_required(login_url='/login')
 def UserProfile(request, pk):
     usuario = User.objects.get(username=pk)
 
@@ -326,6 +347,8 @@ def UserProfile(request, pk):
     }
     return render(request, "base/profile_user.html", context)
 
+
+@login_required(login_url='/login')
 def EditarUserProfile(request, pk):
     usuario = User.objects.get(username=pk)
 

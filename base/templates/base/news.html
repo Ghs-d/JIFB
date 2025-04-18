@@ -29,6 +29,18 @@
                             <a href="{% url 'noticia' noticia.id %}" class="noticia-leia">Leia mais</a>
                         </div>
                     </div>
+                {% elif noticia.visivel == False and request.user.is_staff %}
+                    <div class="noticia-card">
+                        <a href="{% url 'noticia' noticia.id %}">
+                            <img src="{% static 'media/' %}{{ noticia.capa_noticia }}" alt="Notícia {{ noticia.id }}">
+                        </a>
+                        <div class="noticia-card-content">
+                            <h3>{{noticia.título}}</h3>
+                            <p>Publicado em {{noticia.created}}</p>
+                            <p>Criado por {{noticia.autor}}</p>
+                            <a href="{% url 'noticia' noticia.id %}" class="noticia-leia">Leia mais</a>
+                        </div>
+                    </div>
                 {% endif %}
             {% endfor%} 
 
