@@ -25,7 +25,7 @@ Antes de começar, verifique se você atendeu aos seguintes requisitos:
 - Você instalou `Python 3.13`
 - Você tem uma máquina `Windows, Linux ou MacOS`.
 
-## 🚀 Instalando <nome_do_projeto>
+## 🚀 Instalando JIFB
 
 Para instalar o <JIFB>, siga estas etapas:
 
