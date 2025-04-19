@@ -11,6 +11,17 @@
 </head>
 <body>
 
+  <style>
+   img {
+    width: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+  </style>
+
   {% include 'navbar.html'%}
   <div class="noticia">
     {% if noticia.visivel == False and request.user.is_staff == True %}
@@ -18,14 +29,15 @@
     <h3>{{aviso}}</h3>
 
     {% endif %}
-      <h1> {{ noticia.título }}</h1> 
-      {% if request.user.is_staff == True %}
-        <a href="{% url 'editar' noticia.id %}">Editar</a>
-        <a href="{% url 'excluir' noticia.id %}">Excluir</a>
-        {% endif %}
-      <div class="info">Publicado em {{ noticia.created }} por <span class="autor">
-        {{ noticia.autor }}</span>
-      </div>
+    <div class="d-flex gap-2 mb-3">
+      <a href="{% url 'editar' noticia.id %}" class="btn btn-sm btn-warning">
+        <i class="fas fa-pen"></i> Editar
+      </a>
+      <a href="{% url 'excluir' noticia.id %}" class="btn btn-sm btn-danger">
+        <i class="fas fa-trash-alt"></i> Excluir
+      </a>
+    </div>
+    
       
       
       <img src="{% static 'media/' %}{{ noticia.capa_noticia }}" alt="Capa da Notícia" class="capa">
@@ -68,7 +80,6 @@
               <div class="dropdown ms-auto">
                 <i class="fas fa-ellipsis-vertical" data-bs-toggle="dropdown" aria-expanded="false"></i>
                 <ul class="dropdown-menu">
-                  {% if request.user.is_staff == True or request.user.username == comentario.autor.user.username %}
                   <li>
                     <span class="dropdown-item">
                       <i class="fas fa-pen mx-2"></i> Ainda em desenvolvimento
@@ -76,12 +87,9 @@
                   </li>
                   <li>
                     <span class="dropdown-item">
-                      <a href="{% url 'excluir-comentario' comentario.id %}">
-                        <i class="fas fa-trash mx-2"></i>Excluir
-                      </a>
+                        <i class="fas fa-trash mx-2"></i> Ainda em desenvolvimento
                     </span>
                   </li>
-                  {% endif %}
                 </ul>
               </div>
             </div>
@@ -92,6 +100,40 @@
     </div>
     <hr class="line">
   </div>
+
+  
+
+ <div class="social-share-row">
+  <a class="social-button facebook"
+    href="https://www.facebook.com/sharer/sharer.php?u= Confira no JIFB:{{ request.build_absolute_uri }}"
+    target="_blank">
+    <i class="fab fa-facebook-f"></i> Facebook
+  </a>
+
+  <a class="social-button twitter"
+    href="https://twitter.com/intent/tweet?url= Confira no JIFB:{{ request.build_absolute_uri }}"
+    target="_blank">
+    <i class="fab fa-twitter"></i> Twitter
+  </a>
+
+  <a class="social-button whatsapp"
+    href="https://api.whatsapp.com/send?text= Confira no JIFB:{{ noticia.titulo }} - {{ request.build_absolute_uri }}"
+    target="_blank">
+    <i class="fab fa-whatsapp"></i> WhatsApp
+  </a>
+
+
+
+  <a class="social-button threads"
+    href="https://www.threads.net/share?url= Confira no JIFB:{{ request.build_absolute_uri }}"
+    target="_blank">
+    <i class="fas fa-at"></i> Threads
+  </a>
+</div>
+
+
+
+
 
 
 <script src="https://unpkg.com/htmlincludejs"></script>
@@ -132,11 +174,7 @@
                   <span class="dropdown-item"><i class="fas fa-pen mx-2"></i> Ainda em desenvolvimento</span>
                 </li>
                 <li>
-                  <span class="dropdown-item">
-                    <a href="/excluir-comentario/${data.id}/">
-                      <i class="fas fa-trash mx-2"></i> Excluir
-                      </a>
-                  </span>
+                  <span class="dropdown-item"><i class="fas fa-trash mx-2"></i> Ainda em desenvolvimento</span>
                 </li>
               </ul>
             </div>
@@ -160,65 +198,4 @@
 
 
 
-
-<!--  <div class="social-share-row">
-      <a class="social-button facebook"
-        href="https://www.facebook.com/sharer/sharer.php?u= Confira no JIFB:{{ request.build_absolute_uri }}"
-        target="_blank">
-        <i class="fab fa-facebook-f"></i> Facebook
-      </a>
-
-      <a class="social-button twitter"
-        href="https://twitter.com/intent/tweet?url= Confira no JIFB:{{ request.build_absolute_uri }}"
-        target="_blank">
-        <i class="fab fa-twitter"></i> Twitter
-      </a>
-
-      <a class="social-button whatsapp"
-        href="https://api.whatsapp.com/send?text= Confira no JIFB:{{ noticia.titulo }} - {{ request.build_absolute_uri }}"
-        target="_blank">
-        <i class="fab fa-whatsapp"></i> WhatsApp
-      </a>
-
-
-
-      <a class="social-button threads"
-        href="https://www.threads.net/share?url= Confira no JIFB:{{ request.build_absolute_uri }}"
-        target="_blank">
-        <i class="fas fa-at"></i> Threads
-      </a>
-    </div>
     
-      <script>
-
-
-    const form = document.getElementById("form-comentario");
-    if (form) {
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        const comentario = document.getElementById("comentario").value;
-
-        fetch("/api/comentarios/", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": "{{ csrf_token }}",
-          },
-          body: JSON.stringify({ texto: comentario }),
-        })
-        .then(res => res.json())
-        .then(data => {
-          alert("Comentário enviado!");
-          form.reset();
-        })
-        .catch(err => {
-          alert("Erro ao enviar.");
-          console.error(err);
-        });
-      });
-    }
-  </script>
-    
-    
-    -->

@@ -1,9 +1,9 @@
 .login-container {
     background: white;
-    padding: 40px;
+    padding: 400px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    width: 430px;
+    width: 500px;
     text-align: center;
     margin: auto;
     margin-bottom: 100px;
@@ -12,9 +12,10 @@
 .error-message {
     color: red;
     margin-top: 10px;
-    display: none;
+    display: grid;
 }
-@media (max-width: 768px) {
+
+@media (max-width: 640px) {
     .login-container {
         margin-top: 13vh;
         width: 95%;
