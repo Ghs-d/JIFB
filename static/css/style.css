@@ -22,10 +22,10 @@
 
 .entrada-logo {
   position: absolute;
-  top: 50%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 280px;
+  width: 210px !important;
   height: auto;
   opacity: 0.9;
 }
