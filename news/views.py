@@ -10,7 +10,8 @@ from django.db.models import Q
 from pathlib import Path
 
 from .forms import NoticiaForm, ArquivosForm, ArquivoFormSet
-from base.models import Perfil, Comentario
+from base.models import Perfil
+from comments.models import Comentario, Resposta
 from .models import Noticia, ArquivoNaNoticia
 
 

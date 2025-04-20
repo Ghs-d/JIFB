@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
+DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,15 +38,20 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'base.apps.BaseConfig',
+    #'rest_framework',
+]
+THIRD_PARTY_APPS = []
+
+LOCAL_APPS = [
+    "base.apps.BaseConfig",
     'news.apps.NewsConfig',
     'users.apps.UsersConfig',
     'busca.apps.BuscaConfig',
     'comments.apps.CommentsConfig',
+    ]
+  
 
-    #'rest_framework',
-
-]
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

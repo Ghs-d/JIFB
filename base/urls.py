@@ -12,9 +12,6 @@ urlpatterns = [
 
     path('quem-somos/', views.QuemSomosPage, name='quem_somos'),
 
-    
-
-    path('excluir-comentario/<str:pk>/', views.ComentarioExcluir, name='excluir-comentario'),
 
 
 ]
