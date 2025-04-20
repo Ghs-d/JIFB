@@ -3,12 +3,12 @@
     <div class="user">
       <div class="user-pic">
         <a href="{% url 'user' resposta.autor.username %}">
-          <img src="{% static 'media/' %}{{ resposta.autor.foto_de_perfil }}" alt="Avatar" style="width: 100%; height: 100%;">
+          <img src="{{ resposta.autor.foto_de_perfil.url }}" alt="Avatar" style="width: 100%; height: 100%;">
         </a>
       </div>
       <div class="user-info">
           <span>@{{ resposta.autor.username }}</span>
-        <p>{{ resposta.created|date:"d M Y - H:i" }}</p>
+        <p>{{ resposta.created | date:"d M Y - H:i" }}</p>
       </div>
     </div>
     <div class="comment-content">{{ resposta.body }}</div>

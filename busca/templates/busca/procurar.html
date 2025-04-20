@@ -32,7 +32,7 @@
                             {% if noticia.visivel == True %}
                                 <div class="noticia-card">
                                     <a href="{% url 'noticia' noticia.id %}">
-                                        <img src="{% static 'media/' %}{{ noticia.capa_noticia }}" alt="Notícia {{ noticia.id }}">
+                                        <img src="{{noticia.capa_noticia.url}}" alt="Notícia {{ noticia.id }}">
                                     </a>
                                     <div class="noticia-card-content">
                                         <h3>{{noticia.título}}</h3>

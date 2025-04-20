@@ -74,7 +74,7 @@ def NoticiaPage(request, pk):
                         'id': comentario.id,
                         'body': comentario.body,
                         'autor': comentario.autor.user.username,
-                        'foto': comentario.autor.foto_de_perfil.url if hasattr(comentario.autor.foto_de_perfil, 'url') else f"/static/media/{comentario.autor.foto_de_perfil}",
+                        'foto': comentario.autor.foto_de_perfil.url if hasattr(comentario.autor.foto_de_perfil, 'url') else f"media/{comentario.autor.foto_de_perfil.url}",
                         'data': comentario.created.strftime('%d %b %Y - %H:%M')
                     })
 
