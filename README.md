@@ -15,8 +15,9 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão vo
 - [x] Conseguir publicar matérias
 - [x] Conseguir editar as matérias
 - [x] Conseguir exlcuir as matérias
-- [ ] Sistema de Login
-- [ ] Comentários nas notícias
+- [x] Sistema de Login
+- [x] Comentários nas notícias
+- [ ] Respostas nos comentários
 
 ## 💻 Pré-requisitos
 
