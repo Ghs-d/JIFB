@@ -16,8 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-
-
+from news.views import NoticiaPublicar, NoticiaEditar, NoticiaExcluir, NoticiaPage
+from busca.views import Procurar
+from users.views import *
+from base.views import *
 """
 @api.get("/add")
 def add(request, a: int, b: int):
@@ -28,5 +30,18 @@ def add(request, a: int, b: int):
 urlpatterns = [
     path('admin/', admin.site.urls, name="admin"),
     path('', include('base.urls')),
+    
+    path('publicar/', NoticiaPublicar, name='publicar'),
+    path('editar/<str:pk>/', NoticiaEditar, name='editar'),
+    path('excluir/<str:pk>/', NoticiaExcluir, name='excluir'),
+    path('noticia/<str:pk>/', NoticiaPage, name='noticia'),
+    path('noticia/feed/', NoticiaPage, name='feed'),
+
+    path('procurar/', Procurar, name='procurar'),
+
+    path('u/', RedirectToHome),
+    path('u/<str:pk>', UserProfile, name='user'),
+    path('u/editar/<str:pk>', EditarUserProfile, name='editar_user'),
+
 ]
 

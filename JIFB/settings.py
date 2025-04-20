@@ -39,6 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'base.apps.BaseConfig',
+    'news.apps.NewsConfig',
+    'users.apps.UsersConfig',
+    'busca.apps.BuscaConfig',
+    'comments.apps.CommentsConfig',
 
     #'rest_framework',
 
