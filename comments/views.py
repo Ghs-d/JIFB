@@ -22,7 +22,7 @@ def ComentarioExcluir(request, pk):
         
         return redirect('noticia', comentario.noticia.id)
 
-    return render(request, "base/excluir.html", {
+    return render(request, "comments/excluir.html", {
                                                 'obj': comentario,
                                                 'foto_de_perfil':Perfil.objects.get(user=request.user).foto_de_perfil
                                                 })

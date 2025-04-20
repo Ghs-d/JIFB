@@ -23,7 +23,7 @@ def UserProfile(request, pk):
         "foto_de_perfil":foto_de_perfil,
         "perfil":perfil
     }
-    return render(request, "base/profile_user.html", context)
+    return render(request, "users/profile_user.html", context)
 
 
 @login_required(login_url='/login')
@@ -50,4 +50,4 @@ def EditarUserProfile(request, pk):
     context = {
         "profile_form":profile_form,
     }
-    return render(request, "base/editar_profile.html", context)
+    return render(request, "users/editar_profile.html", context)

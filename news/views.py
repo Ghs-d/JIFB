@@ -41,7 +41,7 @@ def NoticiaPublicar(request):
         'noticia_form':noticia_form,
         'foto_de_perfil':Perfil.objects.get(user=request.user).foto_de_perfil
     }
-    return render(request, "base/noticia_form.html", context)
+    return render(request, "news/noticia_form.html", context)
 
 
 
@@ -89,7 +89,7 @@ def NoticiaPage(request, pk):
                 'comentarios':comentarios,
                 'foto_de_perfil':foto_de_perfil
             }
-            return render(request, "base/template_news.html", context)
+            return render(request, "news/template_news.html", context)
         
         elif noticia.visivel == False and request.user.is_staff == True:
             conteudo_html = noticia.corpo
@@ -102,7 +102,7 @@ def NoticiaPage(request, pk):
                 'aviso':"Essa notícia não está visível para os usuários",
                 'foto_de_perfil':Perfil.objects.get(user=request.user).foto_de_perfil
             }
-            return render(request, "base/template_news.html", context)
+            return render(request, "news/template_news.html", context)
         
 
         elif noticia.visivel == False and request.user.is_staff == False:
@@ -122,7 +122,7 @@ def NoticiaPage(request, pk):
             'foto_de_perfil':foto_de_perfil
             }
 
-        return render(request, "base/news.html", context)
+        return render(request, "news/news.html", context)
 
     else:
         return redirect('home')
@@ -191,7 +191,7 @@ def NoticiaEditar(request, pk):
         'noticia': noticia,
         'foto_de_perfil':foto_de_perfil
     }
-    return render(request, "base/editar.html", context)
+    return render(request, "news/editar.html", context)
 
 
 
@@ -222,7 +222,7 @@ def NoticiaExcluir(request, pk):
         noticia.delete()
         return redirect('feed')
 
-    return render(request, "base/excluir.html", {
+    return render(request, "news/excluir.html", {
                                                 'obj': noticia,
                                                 'foto_de_perfil':Perfil.objects.get(user=request.user).foto_de_perfil
                                                 })
