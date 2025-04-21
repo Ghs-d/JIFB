@@ -68,7 +68,7 @@
       </form>
     </div>
       
-    {% if comentarios %}
+
         <div class="comment-container" id="lista-comentarios">
           {% for comentario in comentarios %}
             <div class="user">
@@ -104,14 +104,14 @@
             <!--
             {% for resposta in comentario.replies.all %}
             
-              {% include 'base/resposta.html' %}
+              {% include 'comments/resposta.html' %}
             
             {% endfor %}
             -->
           {% endfor %}
 
         </div>
-      {% endif %}
+
     </div>
     <hr class="line">
   </div>

@@ -57,26 +57,30 @@ def NoticiaPage(request, pk):
             conteudo_html = noticia.corpo
 
             if request.method == 'POST':
-                if not request.user.is_authenticated:
-                    return redirect('login')
+                print(request.user.is_authenticated)
+                if request.user.is_authenticated == True:
+                    if Perfil.objects.get(user=request.user).pode_comentar == False:
+                        return HttpResponse('<h1>Você está proibido de comentar</h1>')
+                    
+                    else:
+                        comentario = Comentario.objects.create(
+                            autor=Perfil.objects.get(user=request.user),
+                            noticia=noticia,
+                            body=request.POST.get('body')
+                        )
+
+                        return JsonResponse({
+                            'id': comentario.id,
+                            'body': comentario.body,
+                            'autor': comentario.autor.user.username,
+                            'foto': comentario.autor.foto_de_perfil.url if hasattr(comentario.autor.foto_de_perfil, 'url') else f"media/{comentario.autor.foto_de_perfil.url}",
+                            'data': comentario.created.strftime('%d %b %Y - %H:%M')
+                        })
                 
-                elif request.user.perfil.pode_comentar == False:
-                    return HttpResponse('<h1>Você está proibido de comentar</h1>')
-
                 else:
-                    comentario = Comentario.objects.create(
-                        autor=Perfil.objects.get(user=request.user),
-                        noticia=noticia,
-                        body=request.POST.get('body')
-                    )
+                      return redirect('login')
+                  
 
-                    return JsonResponse({
-                        'id': comentario.id,
-                        'body': comentario.body,
-                        'autor': comentario.autor.user.username,
-                        'foto': comentario.autor.foto_de_perfil.url if hasattr(comentario.autor.foto_de_perfil, 'url') else f"media/{comentario.autor.foto_de_perfil.url}",
-                        'data': comentario.created.strftime('%d %b %Y - %H:%M')
-                    })
 
             if request.user.is_authenticated:  
                 foto_de_perfil = Perfil.objects.get(user=request.user).foto_de_perfil

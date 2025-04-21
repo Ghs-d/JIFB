@@ -10,7 +10,7 @@ from base.models import Perfil
 from comments.models import *
 # Create your views here.
 
-@login_required(login_url='/login')
+
 def UserProfile(request, pk):
     usuario = User.objects.get(username=pk)
 
