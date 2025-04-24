@@ -28,7 +28,7 @@ Antes de começar, verifique se você atendeu aos seguintes requisitos:
 
 ## 🚀 Instalando JIFB
 
-Para instalar o <JIFB>, siga estas etapas:
+Para instalar o JIFB, siga estas etapas:
 
 Linux e macOS:
 
