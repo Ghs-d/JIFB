@@ -14,7 +14,13 @@ class Comentario(models.Model):
     def __str__(self):
         return f'{self.autor.user.username} : {self.body[0:30]}'
 
+class GosteiComentario(models.Model):
+    comment = models.ForeignKey(Comentario, on_delete=models.CASCADE)
+    perfil = models.ForeignKey(Perfil, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f'{self.perfil.user.username} : {self.comment.body[:30]}'
 
 class Resposta(models.Model):
     autor = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name='replies')
@@ -27,3 +33,11 @@ class Resposta(models.Model):
     
     def __str__(self):
         return f'{self.autor.user.username} : {self.body[0:30]}'
+    
+class GosteiResposta(models.Model):
+    resposta = models.ForeignKey(Comentario, on_delete=models.CASCADE)
+    perfil = models.ForeignKey(Perfil, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.perfil.user.username} : {self.comment.body[:30]}'

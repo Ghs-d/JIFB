@@ -1,46 +1,38 @@
-{% load static %} 
-<!doctype html>
-<html lang="pt-BR">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>JIFB | Login</title>
-<link rel="stylesheet" href="{% static 'CSS/base/login.css' %}">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-</head>
-<body>
-        {% include 'navbar.html' %}
-    
-        {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
+{% extends "main.html" %}
+{% load static %}
 
-        <section>
-            <div class="login-container">
-                <h2>Entrar</h2>
-                <form method="POST" action="">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <input type="username" id="username" name="username" class="form-control" placeholder="Digite seu nome de usuário"/>
-                    </div>
-                    <div class="mb-3">
-                        <input type="password" id="password" name="password" class="form-control" placeholder="Digite sua senha"/>
-                    </div>
-                    <button type="submit" class="btn btn-outline-success">Entrar</button>
-                </form>
-                <p>Não possui uma conta?</p>
-                <a href="{% url 'register' %}">Registre-se</a>
-                <p class="error-message" id="errorMessage">E-mail ou senha incorretos!</p>
-            </div>
-        </section>
-        
-    {% include 'footer.html' %}
+{% block title %}Login | JIFB{% endblock %}
 
-<script src="{% static 'JS/login.js' %}"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+{% block extra_css %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+{% endblock %}
+
+{% block content %}
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <section>
+        <div class="login-container">
+            <h2>Entrar</h2>
+            <form method="POST" action="">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <input type="username" id="username" name="username" class="form-control" placeholder="Digite seu nome de usuário"/>
+                </div>
+                <div class="mb-3">
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Digite sua senha"/>
+                </div>
+                <button type="submit" class="btn btn-outline-success">Entrar</button>
+            </form>
+            <p>Não possui uma conta?</p>
+            <a href="{% url 'register' %}">Registre-se</a>
+            <p class="error-message" id="errorMessage">E-mail ou senha incorretos!</p>
+        </div>
+    </section>
+{% endblock %}
+

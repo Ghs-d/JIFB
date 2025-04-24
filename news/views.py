@@ -45,91 +45,67 @@ def NoticiaPublicar(request):
 
 
 
+
 def NoticiaPage(request, pk):
     if pk.isnumeric():
         noticia = get_object_or_404(Noticia, pk=pk)
-
         arquivos = list(ArquivoNaNoticia.objects.filter(noticia=noticia).values('arquivos'))
- 
-        comentarios = list(Comentario.objects.filter(noticia=noticia))
+        comentarios = list(Comentario.objects.filter(noticia=noticia).order_by('-created'))
 
-        if noticia.visivel == True:
+        if noticia.visivel or (noticia.visivel and request.user.is_staff):
             conteudo_html = noticia.corpo
+            perfil = Perfil.objects.get(user=request.user) if request.user.is_authenticated else None
 
             if request.method == 'POST':
-                print(request.user.is_authenticated)
-                if request.user.is_authenticated == True:
-                    if Perfil.objects.get(user=request.user).pode_comentar == False:
-                        return HttpResponse('<h1>Você está proibido de comentar</h1>')
-                    
-                    else:
-                        comentario = Comentario.objects.create(
-                            autor=Perfil.objects.get(user=request.user),
-                            noticia=noticia,
-                            body=request.POST.get('body')
-                        )
-
-                        return JsonResponse({
-                            'id': comentario.id,
-                            'body': comentario.body,
-                            'autor': comentario.autor.user.username,
-                            'foto': comentario.autor.foto_de_perfil.url if hasattr(comentario.autor.foto_de_perfil, 'url') else f"media/{comentario.autor.foto_de_perfil.url}",
-                            'data': comentario.created.strftime('%d %b %Y - %H:%M')
-                        })
+                if not request.user.is_authenticated:
+                    return redirect('login')
                 
-                else:
-                      return redirect('login')
-                  
+                if not perfil.pode_comentar:
+                    return HttpResponse('<h1>Você está proibido de comentar</h1>')
 
+                body = request.POST.get('body', '').strip()
+                if not body:
+                    return JsonResponse({'error': 'Comentário não pode estar vazio.'}, status=400)
 
-            if request.user.is_authenticated:  
-                foto_de_perfil = Perfil.objects.get(user=request.user).foto_de_perfil
-            else:
-                foto_de_perfil = None
+                comentario = Comentario.objects.create(
+                    autor=perfil,
+                    noticia=noticia,
+                    body=body
+                )
+
+                return JsonResponse({
+                    'id': comentario.id,
+                    'body': comentario.body,
+                    'autor': comentario.autor.user.username,
+                    'foto': comentario.autor.foto_de_perfil.url if hasattr(comentario.autor.foto_de_perfil, 'url') else f"/media/{comentario.autor.foto_de_perfil}",
+                    'data': comentario.created.strftime('%d %b %Y - %H:%M')
+                })
+
             context = {
-                'conteudo_html':conteudo_html,
-                'noticia':noticia,
-                'arquivos':arquivos,
-                'comentarios':comentarios,
-                'foto_de_perfil':foto_de_perfil
+                'conteudo_html': conteudo_html,
+                'noticia': noticia,
+                'arquivos': arquivos,
+                'comentarios': comentarios,
+                'foto_de_perfil': perfil.foto_de_perfil if perfil else None
             }
-            return render(request, "news/template_news.html", context)
-        
-        elif noticia.visivel == False and request.user.is_staff == True:
-            conteudo_html = noticia.corpo
 
-            context = {
-                'conteudo_html':conteudo_html,
-                'noticia':noticia,
-                'arquivos':arquivos,
-                'comentarios':comentarios,
-                'aviso':"Essa notícia não está visível para os usuários",
-                'foto_de_perfil':Perfil.objects.get(user=request.user).foto_de_perfil
-            }
-            return render(request, "news/template_news.html", context)
-        
+            if not noticia.visivel:
+                context['aviso'] = "Essa notícia não está visível para os usuários"
 
-        elif noticia.visivel == False and request.user.is_staff == False:
-            return redirect('feed')
-        
+            return render(request, "news/noticia_page.html", context)
+
         else:
             return redirect('feed')
-        
+
     elif pk == 'feed':
         noticias = Noticia.objects.all().order_by('-updated')
-        if request.user.is_authenticated:  
-            foto_de_perfil = Perfil.objects.get(user=request.user).foto_de_perfil
-        else:
-            foto_de_perfil = None
-        context = {
-            'noticias':noticias,
-            'foto_de_perfil':foto_de_perfil
-            }
+        perfil = Perfil.objects.get(user=request.user) if request.user.is_authenticated else None
+        return render(request, "news/news.html", {
+            'noticias': noticias,
+            'foto_de_perfil': perfil.foto_de_perfil if perfil else None
+        })
 
-        return render(request, "news/news.html", context)
-
-    else:
-        return redirect('home')
+    return redirect('home')
     
     
 @login_required(login_url='/login')

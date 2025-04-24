@@ -1,13 +1,13 @@
 {% load static %}
 <div class="user">
     <div class="user-pic">
-      <a href="{% url 'user' resposta.autor.user.username %}">
-        <img src="{{resposta.autor.foto_de_perfil.url}}" alt="Avatar" style="width: 100%; height: 100%;">
+      <a href="{% url 'user' comentario.autor.user.username %}">
+        <img src="{{comentario.autor.foto_de_perfil.url}}" alt="Avatar" style="width: 100%; height: 100%;">
       </a>
     </div>
     <div class="user-info">
-        <span>@{{ resposta.autor.user.username }}</span>
-      <p>{{ resposta.created|date:"d M Y - H:i" }}</p>
+        <span>@{{ comentario.autor.user.username }}</span>
+      <p>{{ comentario.created|date:"d M Y - H:i" }}</p>
     </div>
     <div class="dropdown ms-auto">
       <i class="fas fa-ellipsis-vertical" data-bs-toggle="dropdown" aria-expanded="false"></i>
@@ -27,4 +27,10 @@
       </ul>
     </div>
   </div>
-  <div class="comment-content">{{ resposta.body }}</div>
+  <div class="comment-content">{{ comentario.body }}</div>
+  
+  <div>
+    {% for resposta in comentario.Resposta.all %}
+    {% include 'comments/resposta.html' %}
+    {% endfor %}
+  </div>

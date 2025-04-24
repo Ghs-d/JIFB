@@ -9,9 +9,6 @@ from django.contrib.auth.decorators import login_required
 @login_required(login_url='/login')
 def ComentarioExcluir(request, pk):
     comentario = Comentario.objects.get(id=pk)
-
-    
-
     if request.method == 'POST':
         # Exclui arquivos relacionados à notícia
         if request.user.is_staff == False or request.user.username != comentario.autor.user.username:
